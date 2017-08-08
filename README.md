@@ -1,5 +1,7 @@
 # RemoteRun
 
+Is an HTA that will run TestComplete/TestExcecute's command line remotely.
+
 ## Tasks
 
 - [x] Make HTA
