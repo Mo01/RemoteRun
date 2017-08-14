@@ -5,7 +5,7 @@ Is an HTA that will run TestComplete/TestExcecute's command line remotely.
 ## Tasks
 
 - [x] Make HTA
-- [ ] Get a list of the QA machines
+- [x] Get a list of the QA machines
 - [ ] Create a table
 - [ ] Create buttons to run remote commands
 - [ ] Get a list of all the TestComplete Projects
