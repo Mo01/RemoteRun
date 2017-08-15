@@ -22,45 +22,19 @@ CONTEXTMENU="Yes" />
 </head>
 
 <body>
-<p>Servers</p>
 
-<button onClick="showServer2()">Show Server 2</button>
-<button name="showServer">Show Server</button>
-</form>
 </body>
 
 
 <script language="javascript" type="text/javascript">
 
-function showServer2() {
-	var oShell = new ActiveXObject("WScript.Shell");
-	//oShell.CurrentDirectory = "C:\\Windows\\PSTools";
-	//alert(oShell.CurrentDirectory);
-	//oShell.Run("calc");
-	oShell.Run("C:\\Windows\\PSTools\\PsExec.exe -i -s -d \\\\172.18.0.123 -u WIN2012\\Administrator -p Completeview! C:\\testbatch.bat", 1, true);
-}
 </script>
 
 <script language="vbscript" type="text/vbscript"> 
-Sub showServer_OnClick()
-	strCmd = """C:\Windows\System32\PSTools\PsExec"" calc"
-	Set oShell = CreateObject("WScript.Shell")
-	oShell.Run strCmd
-	MsgBox "Running"
-	
-	Dim selectedServer
-	servers =  document.remoteRun.server  'document.querySelector('input[name="server"]:checked').value
-	'MsgBox servers(0).value
-	'Dim item
-	
-	For i = 0 to document.remoteRun.server.length - 1
-		'MsgBox document.remoteRun.server(i).value
-		'MsgBox document.remoteRun.server(i).nextSibling.data
-	Next
-	
-End Sub
+
 </script>
 
-
+<style>
+</style>
 
 </html>
