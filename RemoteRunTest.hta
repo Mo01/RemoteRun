@@ -28,6 +28,7 @@
         <table>
             <thead>
                 <tr>
+					<th>#</th>
                     <th>Sever Model</th>
                     <th>Computer name</th>
                     <th>OS</th>
@@ -54,16 +55,34 @@
     };
 
     var os = {
-        v2008: "2008",
-        v2012: "2012",
+        v2008: "Server 2008",
+        v2012: "Server 2012",
         v7: "7",
         v8: "8",
         v81: "8.1",
         v10: "10"
     };
-
+	
+	function RemoteMachine(sServerModel, sComputerName, sOS, sArchitecture, sIP) {
+		RemoteMachine.Count++;
+		
+        var username = "Administrator";
+		
+		// HTML properties.
+		this.htmlIndex = RemoteMachine.Count;
+        this.htmlServerModel = sServerModel;
+        this.htmlComputerName = "<b>" + sComputerName + "</b>";
+        this.htmlOS = sOS;
+        this.htmlArch = sArchitecture;
+        this.htmlIP = sIP;
+		this.htmltxtBoxPassword = '<input type="password" />';
+		this.htmlStatus = "";
+		this.htmlBtnRun = '<button onClick="Run(' + (RemoteMachine.Count-1) + ')">Run</button>';
+    }
+	// Static property.
+	RemoteMachine.Count = 0;
+	
     var remoteMachines = [
-
         new RemoteMachine("PowerProR", "WIN-HOHNKC8JBI8", os.v2012, architecture.x64, "172.18.0.100"),
         new RemoteMachine("PowerPro", "QA-POWERPRO-RB", os.v7, architecture.x64, "172.18.0.101"),
         new RemoteMachine("PowerProR", "DESKTOP-HHC3INQ", os.v10, architecture.x64, "172.18.0.102"),
@@ -73,40 +92,19 @@
         new RemoteMachine("PowerPlus", "QA-PowerPlus", os.v2008, architecture.x64, "172.18.0.121"),
         new RemoteMachine("PowerPlus", "WIN-V379E1QUSJ4", os.v2008, architecture.x64, "172.18.0.122"),
         new RemoteMachine("PowerPlus", "Win2012", os.v2012, architecture.x64, "172.18.0.123"),
-
-
     ];
-
-    function RemoteMachine(sServerModel, sComputerName, sOS, sArchitecture, sIP) {
-        // HTML properties.
-        this.htmlServerModel = sServerModel;
-        this.htmlComputerName = "<b> " + sComputerName + "</b>";
-        this.htmlOS = sOS;
-        this.htmlArch = sArchitecture;
-        this.htmlIP = sIP;
-		this.htmltxtBoxPassword = '<input type="text" />';
-		this.htmlStatus = "";
-		this.htmlBtnRun = "<button>Run</button>";
-		
-        RemoteMachine.Count++;
-        var id = RemoteMachine.Count;
-        var username = "Administrator";
-
-
-        function Run() {
-            //run on remote machine;
-        };
-    }
-    // Static property
-    RemoteMachine.Count = 0;
-
-    for (var i = 0; i < remoteMachines.length; i++) {
+	
+    for (var i = 0; i < remoteMachines.length - 1; i++) {
         var row = tableBody.insertRow(-1);
         for (var property in remoteMachines[i]) {
             var cell = row.insertCell(-1);
             cell.innerHTML = remoteMachines[i][property];
         }
     }
+	
+	function Run(id) {
+		alert(remoteMachines[id].htmlComputerName);
+	}
 
 </script>
 
