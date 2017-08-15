@@ -1,39 +1,114 @@
 <!DOCTYPE html>
 <html>
-<head>
-<HTA:APPLICATION
-ID="RemoteRun"
-APPLICATIONNAME="Remote Run Salient.VMS.SUT"
-BORDER="Thick"
-CAPTION="Yes"
-SHOWINTASKBAR="Yes"
-SINGLEINSTANCE="Yes"
-SYSMENU="Yes"
-WINDOWSTATE="Normal"
-SCROLL="No"
-SCROLLFLAT="No"
-VERSION="1.0"
-INNERBORDER="No"
-SELECTION="No"
-MAXIMIZEBUTTON="Yes"
-MINIMIZEBUTTON="Yes"
-NAVIGABLE="Yes"
-CONTEXTMENU="Yes" />
 
-<style>
-</style>
+<head>
+    <HTA:APPLICATION ID="RemoteRun" VERSION="1.0" APPLICATIONNAME="Remote Run Salient.VMS.SUT" BORDER="Thick" CAPTION="Yes" SHOWINTASKBAR="Yes" SINGLEINSTANCE="Yes" SYSMENU="Yes" WINDOWSTATE="Normal" SCROLL="No" SCROLLFLAT="No" INNERBORDER="No" SELECTION="No" MAXIMIZEBUTTON="No" MINIMIZEBUTTON="Yes" NAVIGABLE="Yes" CONTEXTMENU="Yes" />
+
+    <style>
+        table,
+        th {
+            border: 1px solid #0f0000;
+            background-color: burlywood;
+            width: auto;
+            margin: 1%;
+            padding: 1%;
+        }
+        
+        body {
+            font-family: Arial;
+        }
+
+    </style>
+
+
 </head>
 
 <body>
+    <center>
+        <table>
+            <thead>
+                <tr>
+                    <th>Sever Model</th>
+                    <th>Computer name</th>
+                    <th>OS</th>
+                    <th>Arch.</th>
+                    <th>IP address</th>
+                    <th>Password</th>
+                </tr>
+            </thead>
 
+            <tbody id="tableBody">
+            </tbody>
+
+        </table>
+    </center>
 </body>
 
 
 <script language="javascript" type="text/javascript">
+    var architecture = {
+        x64: "x64",
+        x32: "x32"
+    };
+
+    var os = {
+        v2008: "2008",
+        v2012: "2012",
+        v7: "7",
+        v8: "8",
+        v81: "8.1",
+        v10: "10"
+    };
+
+    var remoteMachines = [
+
+        new RemoteMachine("PowerProR", "WIN-HOHNKC8JBI8", os.v2012, architecture.x64, "172.18.0.100"),
+        new RemoteMachine("PowerPro", "QA-POWERPRO-RB", os.v7, architecture.x64, "172.18.0.101"),
+        new RemoteMachine("PowerProR", "DESKTOP-HHC3INQ", os.v10, architecture.x64, "172.18.0.102"),
+        new RemoteMachine("RM1100", "QA_RM1100", os.v81, architecture.x64, "172.18.0.103"),
+        new RemoteMachine("RM1000R9_R10XMP", "QA-RM1000", os.v7, architecture.x32, "172.18.0.104"),
+        new RemoteMachine("PowerUltra", "QA_PowerUltra", os.v2008, architecture.x64, "172.18.0.120"),
+        new RemoteMachine("PowerPlus", "QA-PowerPlus", os.v2008, architecture.x64, "172.18.0.121"),
+        new RemoteMachine("PowerPlus", "WIN-V379E1QUSJ4", os.v2008, architecture.x64, "172.18.0.122"),
+        new RemoteMachine("PowerPlus", "Win2012", os.v2012, architecture.x64, "172.18.0.123"),
+
+
+    ];
+
+    function RemoteMachine(sServerModel, sComputerName, sOS, sArchitecture, sIP) {
+        // HTML properties.
+        this.htmlServerModel = sServerModel;
+        this.htmlComputerName = "<b> " + sComputerName + "</b>";
+        this.htmlOS = sOS;
+        this.htmlArch = sArchitecture;
+        this.htmlIP = sIP;
+
+
+        RemoteMachine.Count++;
+        var id = RemoteMachine.Count;
+        var username = "Administrator";
+        var password = "";
+
+
+        function Run() {
+            //run on remote machine;
+        };
+    }
+    // Static property
+    RemoteMachine.Count = 0;
+
+    for (var i = 0; i < remoteMachines.length; i++) {
+        var row = tableBody.insertRow(-1);
+        for (var property in remoteMachines[i]) {
+            var cell = row.insertCell(-1);
+            cell.innerHTML = remoteMachines[i][property];
+        }
+    }
 
 </script>
 
-<script language="vbscript" type="text/vbscript"> 
+<script language="vbscript" type="text/vbscript">
 
 </script>
+
 </html>
