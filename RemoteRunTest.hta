@@ -101,7 +101,7 @@
         new RemoteMachine("PowerPlus", "Win2012", os.v2012, architecture.x64, "172.18.0.123"),
     ];
 	
-    for (var i = 0; i < remoteMachines.length - 1; i++) {
+    for (var i = 0; i < remoteMachines.length; i++) {
         var row = tableBody.insertRow(-1);
         for (var property in remoteMachines[i]) {
             var cell = row.insertCell(-1);
