@@ -4,7 +4,7 @@
 <head>
 	<meta http-equiv="X-UA-Compatible" content="IE=9" />
 	<title id="title">Roctopus</title>
-	<HTA:APPLICATION ID="oHTA" VERSION="1.0.0.19" APPLICATIONNAME="Roctopus Salient.VMS.SUT" BORDER="Thick" CAPTION="Yes" SHOWINTASKBAR="Yes" SINGLEINSTANCE="Yes" SYSMENU="Yes" WINDOWSTATE="Normal" SCROLL="No" SCROLLFLAT="No" INNERBORDER="No" SELECTION="No" MAXIMIZEBUTTON="No" MINIMIZEBUTTON="Yes" NAVIGABLE="Yes" CONTEXTMENU="Yes" />
+	<HTA:APPLICATION ID="oHTA" VERSION="1.0.0.19" APPLICATIONNAME="Roctopus Salient.VMS.SUT" BORDER="Dialog" CAPTION="Yes" SHOWINTASKBAR="Yes" SINGLEINSTANCE="Yes" SYSMENU="Yes" WINDOWSTATE="Normal" SCROLL="No" SCROLLFLAT="No" INNERBORDER="No" SELECTION="No" MAXIMIZEBUTTON="No" MINIMIZEBUTTON="Yes" NAVIGABLE="Yes" CONTEXTMENU="Yes" />
 
 	<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.2.1/jquery.min.js"></script>
 	<script language="javascript" type="text/javascript">
@@ -12,18 +12,49 @@
 
 	</script>
 	<style>
+		
+		* {
+			margin: 0;
+			padding: 0;
+		 }
+		
+		.container {
+			height: 100vh;
+			position: relative;	
+		}
+		
+		.container:before {
+			content: "";
+			position: absolute;
+			background-image: url("https://www.salientsys.com/assets/uploads/images/hero.png");
+			opacity: 0.5;
+			left: 0;
+			top: 0;
+			right: 0;
+			bottom: 0;
+			z-index: 1;
+		}
+		
+		.content {
+			position: relative; 
+			z-index: 2;
+		}
+		
 		body {
-			background: url("https://www.salientsys.com/assets/uploads/images/hero.png");
 			font-family: Arial;
 		}
 		
 		table th {
-			background-color: #e74d3d;
+			background-color: #E74D3D;
 			color: aliceblue;
 		}
 		
 		tbody tr:nth-child(even) {
-			background-color: #f2f2f2
+			background-color: #F2F2F2
+		}
+		
+		tbody tr:nth-child(odd) {
+			background-color: #FFFFFF
 		}
 
 	</style>
@@ -32,27 +63,31 @@
 </head>
 
 <body>
-	<center>
-		<table>
-			<thead>
-				<tr>
-					<th>#</th>
-					<th>Sever Model</th>
-					<th>Computer name</th>
-					<th>OS</th>
-					<th>Arch.</th>
-					<th>IP address</th>
-					<th>Password</th>
-					<th>Status</th>
-					<th></th>
-				</tr>
-			</thead>
+	<div class="container">
+		<div class="content">
+			<center>
+				<table>
+					<thead>
+						<tr>
+							<th>#</th>
+							<th>Sever Model</th>
+							<th>Computer name</th>
+							<th>OS</th>
+							<th>Arch.</th>
+							<th>IP address</th>
+							<th>Password</th>
+							<th>Status</th>
+							<th></th>
+						</tr>
+					</thead>
 
-			<tbody id="tableBody">
-			</tbody>
+					<tbody id="tableBody">
+					</tbody>
 
-		</table>
-	</center>
+				</table>
+			</center>
+		</div>
+	</div>
 </body>
 
 
@@ -89,10 +124,10 @@
 			computerName: "<b>" + this.computerName + "</b>",
 			os: this.os,
 			architecture: this.architecture,
-			ip: '<a href="javascript:remotdesktop(' + id + ')" title="remote in">' + this.ip + '<\a>',
+			ip: '<a href="javascript:remoteDesktop(' + id + ')" title="remote in">' + this.ip + '<\a>',
 			txtBoxPassword: '<input id="password' + id + '" type="password" />',
 			status: "",
-			btnRun: '<button onClick="Run(' + id + ')">Run</button>'
+			btnRun: '<button onClick="run(' + id + ')">Run</button>'
 		};
 	}
 	// Static property.
@@ -118,17 +153,20 @@
 		}
 	}
 
-	function Run(id) {
+	function run(id) {
 		alert(remoteMachines[id].computerName);
 	}
 
-	function remotdesktop(id) {
-
+	function remoteDesktop(id) {
 		var password = document.getElementById("password" + id).value;
+		if (password == "" || password == undefined) {
+			alert("Please provide a password");
+			return;
+		}
+		
 		var oShell = new ActiveXObject("WScript.Shell");
 		oShell.Run('cmdkey /generic:' + remoteMachines[id].computerName + ' /user:"' + remoteMachines[id].username + '" /pass:"' + password + '"');
 		oShell.Run('mstsc /v:' + remoteMachines[id].computerName + ' /admin /fullscreen');
-
 
 	}
 
