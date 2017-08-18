@@ -1,6 +1,6 @@
 # Roctopus
 
-An application that will remotely run certain tasks from a predefined list of remote machines. This ss an HTA that will run TestComplete/TestExcecute's command line remotely. It will also connect to the machine through Remote Desktop Connection when clicking the IP address.
+An application that will remotely run certain tasks from a predefined list of remote machines. This is an HTA that will run TestComplete/TestExcecute's command line remotely. It will also connect to the machine through Remote Desktop Connection when clicking the IP address.
 
 ## Tasks
 
