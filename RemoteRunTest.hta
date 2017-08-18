@@ -4,7 +4,7 @@
 <head>
 	<meta http-equiv="X-UA-Compatible" content="IE=9" />
 	<title id="title">Roctopus</title>
-	<HTA:APPLICATION ID="oHTA" VERSION="1.0.0.18" APPLICATIONNAME="Roctopus Salient.VMS.SUT" BORDER="Thick" CAPTION="Yes" SHOWINTASKBAR="Yes" SINGLEINSTANCE="Yes" SYSMENU="Yes" WINDOWSTATE="Normal" SCROLL="No" SCROLLFLAT="No" INNERBORDER="No" SELECTION="No" MAXIMIZEBUTTON="No" MINIMIZEBUTTON="Yes" NAVIGABLE="Yes" CONTEXTMENU="Yes" />
+	<HTA:APPLICATION ID="oHTA" VERSION="1.0.0.19" APPLICATIONNAME="Roctopus Salient.VMS.SUT" BORDER="Thick" CAPTION="Yes" SHOWINTASKBAR="Yes" SINGLEINSTANCE="Yes" SYSMENU="Yes" WINDOWSTATE="Normal" SCROLL="No" SCROLLFLAT="No" INNERBORDER="No" SELECTION="No" MAXIMIZEBUTTON="No" MINIMIZEBUTTON="Yes" NAVIGABLE="Yes" CONTEXTMENU="Yes" />
 
 	<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.2.1/jquery.min.js"></script>
 	<script language="javascript" type="text/javascript">
@@ -82,16 +82,17 @@
 		this.architecture = sArchitecture;
 		this.ip = sIP;
 
+		var id = RemoteMachine.Count - 1;
 		this.htmlProperties = {
 			index: this.index,
 			serverModel: this.serverModel,
 			computerName: "<b>" + this.computerName + "</b>",
 			os: this.os,
 			architecture: this.architecture,
-			ip: '<a href="javascript:remotdesktop(' + (RemoteMachine.Count - 1) + ')" title="remote in">' + this.ip + '<\a>',
-			txtBoxPassword: '<input id="password' + (RemoteMachine.Count - 1) + '" type="password" />',
+			ip: '<a href="javascript:remotdesktop(' + id + ')" title="remote in">' + this.ip + '<\a>',
+			txtBoxPassword: '<input id="password' + id + '" type="password" />',
 			status: "",
-			btnRun: '<button onClick="Run(' + (RemoteMachine.Count - 1) + ')">Run</button>'
+			btnRun: '<button onClick="Run(' + id + ')">Run</button>'
 		};
 	}
 	// Static property.
