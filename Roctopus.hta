@@ -1,0 +1,267 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+	<meta http-equiv="X-UA-Compatible" content="IE=9" />
+	<meta name="viewport" content="width=device-width, initial-scale=1" />
+	<title id="title">Roctopus</title>
+	<HTA:APPLICATION ID="oHTA" VERSION="1.0.0.21" APPLICATIONNAME="Roctopus Salient.VMS.SUT" BORDER="Dialog" CAPTION="Yes" SHOWINTASKBAR="Yes" SINGLEINSTANCE="Yes" SYSMENU="Yes" WINDOWSTATE="Normal" SCROLL="No" SCROLLFLAT="No" INNERBORDER="No" SELECTION="No" MAXIMIZEBUTTON="No" MINIMIZEBUTTON="Yes" NAVIGABLE="Yes" CONTEXTMENU="Yes" />
+	
+	<link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css">
+	<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.2.1/jquery.min.js"></script>
+	<script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/js/bootstrap.min.js"></script>
+	
+	<script language="javascript" type="text/javascript">
+		
+		title.innerHTML += " " + oHTA.version;
+		
+		var architecture = {
+			x64: "x64",
+			x32: "x32"
+		};
+
+		var os = {
+			v2008: "Server 2008",
+			v2012: "Server 2012",
+			v7: "7",
+			v8: "8",
+			v81: "8.1",
+			v10: "10"
+		};
+		
+		var platforms = {
+			desktop: "Desktop",
+			android: "Android",
+			iOs: "iOS"
+		}
+		
+		var testProjectTypes = {
+			acceptance: "Acceptance",
+			performance: "Performance",
+			regression: "Regression"
+		}
+
+		function RemoteMachine(sServerModel, sComputerName, sOS, sArchitecture, sIP) {
+			RemoteMachine.Count++;
+
+			this.index = RemoteMachine.Count;
+			this.serverModel = sServerModel;
+			this.computerName = sComputerName;
+			this.username = "Administrator";
+			this.os = sOS;
+			this.architecture = sArchitecture;
+			this.ip = sIP;
+
+			var id = RemoteMachine.Count - 1;
+			this.htmlProperties = {
+				index: this.index,
+				serverModel: this.serverModel,
+				computerName: "<b>" + this.computerName + "</b>",
+				os: this.os,
+				architecture: this.architecture,
+				ip: '<a href="javascript:remoteDesktop(' + id + ')" title="remote in">' + this.ip + '</a>',
+				txtBoxPassword: '<input id="password' + id + '" type="password" />',
+				status: "",
+				btnRun: '<button onClick="run(' + id + ')">Run</button>'
+			};
+		}
+		// Static property.
+		RemoteMachine.Count = 0;
+		
+		var remoteMachines = [
+			new RemoteMachine("PowerProR", "WIN-HOHNKC8JBI8", os.v2012, architecture.x64, "172.18.0.100"),
+			new RemoteMachine("PowerPro", "QA-POWERPRO-RB", os.v7, architecture.x64, "172.18.0.101"),
+			new RemoteMachine("PowerProR", "DESKTOP-HHC3INQ", os.v10, architecture.x64, "172.18.0.102"),
+			new RemoteMachine("RM1100", "QA_RM1100", os.v81, architecture.x64, "172.18.0.103"),
+			new RemoteMachine("RM1000R9_R10XMP", "QA-RM1000", os.v7, architecture.x32, "172.18.0.104"),
+			new RemoteMachine("PowerUltra", "QA_PowerUltra", os.v2008, architecture.x64, "172.18.0.120"),
+			new RemoteMachine("PowerPlus", "QA-PowerPlus", os.v2008, architecture.x64, "172.18.0.121"),
+			new RemoteMachine("PowerPlus", "WIN-V379E1QUSJ4", os.v2008, architecture.x64, "172.18.0.122"),
+			new RemoteMachine("PowerPlus", "Win2012", os.v2012, architecture.x64, "172.18.0.123"),
+		];
+	</script>
+	<style>
+		* {
+			margin: 0;
+			padding: 0;
+		}
+		
+		.available-licenses {
+			border: 1px solid black;
+			float: right;
+			margin: 30px;
+			padding: 10px;
+		}
+		
+		.container2 {
+			height: 100vh;
+			position: relative;
+		}
+		
+		.container2:before {
+			content: "";
+			position: absolute;
+			background-image: url("https://www.salientsys.com/assets/uploads/images/hero.png");
+			opacity: 0.5;
+			left: 0;
+			top: 0;
+			right: 0;
+			bottom: 0;
+			z-index: 1;
+		}
+		
+		.content {
+			position: relative;
+			z-index: 2;
+		}
+		
+		.dropdown-tests {
+			margin-bottom: 15px;
+		}
+		
+		.license-count {
+			float: right;
+		}
+		
+		body {
+			font-family: Arial;
+		}
+		
+		center {
+			clear: right;
+		}
+		
+		h4 {
+			margin-bottom: 5px;
+		}
+		
+		select {
+			margin-right: 10px;
+		}
+		
+		table th {
+			background-color: #E74D3D;
+			color: aliceblue;
+		}
+		
+		tbody tr:nth-child(even) {
+			background-color: #F2F2F2;
+		}
+		
+		td {
+			padding: 3px;
+			padding-left: 15px;
+		}
+		
+		th {
+			padding: 3px;
+			padding-left: 15px;
+		}
+
+	</style>
+
+
+</head>
+
+<body>
+	<div class="container2">
+		<div class="content">
+			<div class="available-licenses">
+				<h4>Available licenses</h4>
+				<span>TestComplete</span><span class="license-count" id="tcLicenses">1</span>
+				<br/>
+				<span>TestExecute</span><span class="license-count" id="teLicenses">3</span>
+			</div>
+			<center>
+				
+				<div class="dropdown-tests">
+					<select id="sutSelection">
+					    <option value="Desktop Acceptance">Desktop Acceptance</option>
+						<option value="Desktop Performance">Desktop Performance</option>
+					    <option value="Desktop Regression">Desktop Regression</option>
+					    <option value="Android Acceptance">Android Acceptance</option>
+					    <option value="Android Regression">Android Regression</option>
+						<option value="iOS Acceptance">iOS Acceptance</option>
+					    <option value="iOS Regression">iOS Regression</option>
+					</select>
+					
+					<!-- todo: this dropdown needs to be populated based on the first dropdown selection -->
+					<select onChange="displayTest(this);">
+						<option value="volvo"></option>
+					    <option value="volvo">Volvo</option>
+					    <option value="saab">Saab</option>
+					    <option value="mercedes">Mercedes</option>
+					    <option value="audi">Audi</option>
+					</select>
+				</div>
+				
+				<table class="table-striped">
+					<thead>
+						<tr>
+							<th>#</th>
+							<th>Sever Model</th>
+							<th>Computer Name</th>
+							<th>OS</th>
+							<th>Arch.</th>
+							<th>IP Address</th>
+							<th>Password</th>
+							<th>Status</th>
+							<th id="testToRun"></th>
+						</tr>
+					</thead>
+					<tbody id="tableBody">
+					</tbody>
+				</table>
+			</center>
+		</div>
+	</div>
+</body>
+
+
+<script language="javascript" type="text/javascript">
+
+	for (var i = 0; i < remoteMachines.length; i++) {
+		var row = tableBody.insertRow(-1);
+		for (var key in remoteMachines[i].htmlProperties) {
+			var cell = row.insertCell(-1);
+			cell.innerHTML = remoteMachines[i].htmlProperties[key];
+		}
+	}
+	
+	function pingMachine(ip)
+	{
+		var oShell = new ActiveXObject("WScript.Shell");
+		oShell.Run('ping ' + ip + '-n 1 -w 100');
+		// todo: check if timed out
+		var timedOut = false;
+		return !timedOut;
+	}
+
+	function run(id) {
+		alert(remoteMachines[id].computerName);
+	}
+
+	function remoteDesktop(id) {
+		var password = document.getElementById("password" + id).value;
+		if (password == "" || password == undefined) {
+			alert("Please provide a password");
+			return;
+		}
+
+		var oShell = new ActiveXObject("WScript.Shell");
+		oShell.Run('cmdkey /generic:' + remoteMachines[id].computerName + ' /user:"' + remoteMachines[id].username + '" /pass:"' + password + '"');
+		oShell.Run('mstsc /v:' + remoteMachines[id].computerName + ' /admin /fullscreen');
+
+	}
+	
+	function displayTest(element) {
+		testToRun.innerHTML = sutSelection.value + ": " + element.value;
+	}
+
+</script>
+
+<script language="vbscript" type="text/vbscript">
+
+</script>
+
+</html>
