@@ -10,7 +10,11 @@ An application that will remotely run certain tasks from a predefined list of re
 - [x] Create buttons to run remote commands
 - [ ] Get a list of all the TestComplete Projects
 - [ ] Create lists of tests to run for each TestComplete Project
-- [ ] For Run button table header, put in the name of the test that is selected
-- [ ] Add a counter for available licenses; TestComplete and TestExecute
+- [x] For Run button table header, put in the name of the test that is selected
+- [x] Add available licenses section; TestComplete and TestExecute
 - [x] Create a hyperlink for each QA Machine to run Remote Desktop through the command line
+- [ ] powershell command to run test
+- [ ] powershell command to check who is logged in
+- [ ] powershell command to check if testcomplete/testexecute is running (if running decrement license count)
+- [ ] ping command to check if machine is up
 - [ ] CSS
