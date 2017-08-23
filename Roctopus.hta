@@ -5,7 +5,7 @@
 	<meta http-equiv="X-UA-Compatible" content="IE=9" />
 	<meta name="viewport" content="width=device-width, initial-scale=1" />
 	<title id="title">Roctopus</title>
-	<HTA:APPLICATION ID="oHTA" VERSION="1.0.0.21" APPLICATIONNAME="Roctopus Salient.VMS.SUT" BORDER="Dialog" CAPTION="Yes" SHOWINTASKBAR="Yes" SINGLEINSTANCE="Yes" SYSMENU="Yes" WINDOWSTATE="Normal" SCROLL="No" SCROLLFLAT="No" INNERBORDER="No" SELECTION="No" MAXIMIZEBUTTON="No" MINIMIZEBUTTON="Yes" NAVIGABLE="Yes" CONTEXTMENU="Yes" />
+	<HTA:APPLICATION ID="oHTA" VERSION="1.0.0.22" APPLICATIONNAME="Roctopus Salient.VMS.SUT" BORDER="Dialog" CAPTION="Yes" SHOWINTASKBAR="Yes" SINGLEINSTANCE="Yes" SYSMENU="Yes" WINDOWSTATE="Normal" SCROLL="No" SCROLLFLAT="No" INNERBORDER="No" SELECTION="No" MAXIMIZEBUTTON="No" MINIMIZEBUTTON="Yes" NAVIGABLE="Yes" CONTEXTMENU="Yes" />
 	
 	<link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css">
 	<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.2.1/jquery.min.js"></script>
@@ -61,7 +61,7 @@
 				architecture: this.architecture,
 				ip: '<a href="javascript:remoteDesktop(' + id + ')" title="remote in">' + this.ip + '</a>',
 				txtBoxPassword: '<input type="password" id="password' + id + '" class="form-control" />',
-				status: "",
+				status: '<span id="machineStatus' + id +'"></span>',
 				btnRun: '<button class="btn btn-info" onClick="run(' + id + ')">Run Test</button>'
 			};
 		}
@@ -229,15 +229,17 @@
 			var cell = row.insertCell(-1);
 			cell.innerHTML = remoteMachines[i].htmlProperties[key];
 		}
+		
+		if (!pingMachine(remoteMachines[i].ip)) {
+			document.getElementById("machineStatus" + i).innerHTML = "machine down";
+		}
 	}
 	
 	function pingMachine(ip)
 	{
-		var oShell = new ActiveXObject("WScript.Shell");
-		oShell.Run('ping ' + ip + '-n 1 -w 100');
-		// todo: check if timed out
-		var timedOut = false;
-		return !timedOut;
+		var wshShell = new ActiveXObject("WScript.Shell");
+    	var pingOutput = wshShell.Exec('ping ' + ip + ' -n 1 -w 100').StdOut.ReadAll();
+		return !(pingOutput.indexOf("timed out") >= 0)
 	}
 
 	function run(id) {
@@ -251,9 +253,9 @@
 			return;
 		}
 
-		var oShell = new ActiveXObject("WScript.Shell");
-		oShell.Run('cmdkey /generic:' + remoteMachines[id].computerName + ' /user:"' + remoteMachines[id].username + '" /pass:"' + password + '"');
-		oShell.Run('mstsc /v:' + remoteMachines[id].computerName + ' /admin /fullscreen');
+		var wshShell = new ActiveXObject("WScript.Shell");
+		wshShell.Run('cmdkey /generic:' + remoteMachines[id].computerName + ' /user:"' + remoteMachines[id].username + '" /pass:"' + password + '"');
+		wshShell.Run('mstsc /v:' + remoteMachines[id].computerName + ' /admin /fullscreen');
 
 	}
 	

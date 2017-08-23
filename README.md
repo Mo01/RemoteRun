@@ -16,5 +16,5 @@ An application that will remotely run certain tasks from a predefined list of re
 - [ ] powershell command to run test
 - [ ] powershell command to check who is logged in
 - [ ] powershell command to check if testcomplete/testexecute is running (if running decrement license count)
-- [ ] ping command to check if machine is up
+- [x] ping command to check if machine is up
 - [ ] CSS
