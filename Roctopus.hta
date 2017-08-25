@@ -1,6 +1,5 @@
 <!DOCTYPE html>
 <html>
-
 <head>
 	<meta http-equiv="X-UA-Compatible" content="IE=9" />
 	<meta name="viewport" content="width=device-width, initial-scale=1" />
@@ -14,6 +13,10 @@
 	<script language="javascript" type="text/javascript">
 		
 		title.innerHTML += " " + oHTA.version;
+		
+		var filePath = (function() {
+			return document.location.href.replace("file:///", ""); 
+		})();
 		
 		var architecture = {
 			x64: "x64",
@@ -62,7 +65,7 @@
 				ip: '<a href="javascript:remoteDesktop(' + id + ')" title="remote in">' + this.ip + '</a>',
 				txtBoxPassword: '<input type="password" id="txtPassword' + id + '" class="form-control" onKeyUp="onTxtPasswordKeyUp(' + id + ')" />',
 				status: '<span id="machineStatus' + id +'"></span>',
-				btnRun: '<input type="button" class="btn btn-info" value="Run Test" onClick="onRunTest(' + id + ')" />'
+				btnRun: '<input type="button" class="btn btn-info" value="Run Test" onClick="onRunTest(' + id + ')" align="middle" />'
 			};
 		}
 		// Static property.
@@ -222,23 +225,35 @@
 
 
 <script language="javascript" type="text/javascript">
+	
+	$(document).ready(function(){
+		for (var i = 0; i < remoteMachines.length; i++) {
+			var row = tableBody.insertRow(-1);
+			for (var key in remoteMachines[i].htmlProperties) {
+				var cell = row.insertCell(-1);
+				cell.innerHTML = remoteMachines[i].htmlProperties[key];
+			}
 
-	for (var i = 0; i < remoteMachines.length; i++) {
-		var row = tableBody.insertRow(-1);
-		for (var key in remoteMachines[i].htmlProperties) {
-			var cell = row.insertCell(-1);
-			cell.innerHTML = remoteMachines[i].htmlProperties[key];
+			if (!pingMachine2(remoteMachines[i].ip)) {
+				document.getElementById("machineStatus" + i).innerHTML = "machine down";
+			}
 		}
-		
-		if (!pingMachine(remoteMachines[i].ip)) {
-			document.getElementById("machineStatus" + i).innerHTML = "machine down";
-		}
+	});
+	
+	function pingMachine2(ip) {
+		var wshShell = new ActiveXObject("WScript.Shell");
+		clearConsoleOutputInnerHtml();
+		openConsoleOutputTag();
+    	wshShell.Run('%comspec% /c ping ' + ip + ' -n 1 -w 100 >> ' + filePath, 0, true);
+		closeConsoleOutputTag();
+		alert(consoleOutput.innerHTML);
+		clearConsoleOutputInnerHtml();
+		return true;
 	}
 	
-	function pingMachine(ip)
-	{
+	function pingMachine(ip) {
 		var wshShell = new ActiveXObject("WScript.Shell");
-    	var pingOutput = wshShell.Exec('ping ' + ip + ' -n 1 -w 100').StdOut.ReadAll();
+    	var pingOutput = wshShell.Exec('ping ' + ip + ' -n 1 -w 100 | Find "Reply"').StdOut.ReadAll();
 		return !(pingOutput.indexOf("timed out") >= 0);
 	}
 	
@@ -262,11 +277,51 @@
 	}
 	
 	function onRunTest(id) {
-		alert(remoteMachines[id].computerName);
+		//todo: add logic to run test
+		
 	}
 	
 	function onChangeTest(element) {
 		testToRun.innerHTML = sutSelection.value + ": " + element.value;
+	}
+	
+	function clearConsoleOutputInnerHtml() {
+		consoleOutput.innerHTML = "";
+	}
+	
+	function openConsoleOutputTag() {
+		var fso = new ActiveXObject("Scripting.FileSystemObject");
+
+		var fh = fso.OpenTextFile(filePath);
+		var lines = fh.ReadAll();
+		fh.Close();
+		
+		lines = lines.split('\r\n');
+		lines = lines.slice(0, -1);
+		lines = lines.join('\r\n');
+
+		var fh = fso.CreateTextFile(filePath, true);
+		fh.Write(lines);
+		fh.Close();
+	}
+	
+	function closeConsoleOutputTag() {
+		var fso = new ActiveXObject("Scripting.FileSystemObject");
+
+		var fh = fso.OpenTextFile(filePath);
+		var lines = fh.ReadAll();
+		fh.Close();
+		
+		// todo: need to play with regex a little more; need to find a way to not get this line replace at all
+		lines = lines.replace(/(Reply from .* time<1ms .*)/g, "Success");
+		
+		lines = lines.split('\r\n');
+		lines.push('</consoleOutput>');
+		lines = lines.join('\r\n');
+
+		var fh = fso.CreateTextFile(filePath, true);
+		fh.Write(lines);
+		fh.Close();
 	}
 
 </script>
@@ -276,3 +331,170 @@
 </script>
 
 </html>
+<consoleOutput id="consoleOutput">
+hi there
+	
+	Pinging 172.18.0.100 with 32 bytes of data:
+Reply from 172.18.0.100: bytes=32 time1ms TTL=128
+
+Ping statistics for 172.18.0.100:
+    Packets: Sent = 1, Received = 1, Lost = 0 (0% loss),
+Approximate round trip times in milli-seconds:
+    Minimum = 0ms, Maximum = 0ms, Average = 0ms
+
+Pinging 172.18.0.101 with 32 bytes of data:
+Last Line
+Last Line
+Pinging 172.18.0.100 with 32 bytes of data:
+Sucess
+
+Ping statistics for 172.18.0.100:
+    Packets: Sent = 1, Received = 1, Lost = 0 (0% loss),
+Approximate round trip times in milli-seconds:
+    Minimum = 0ms, Maximum = 0ms, Average = 0ms
+
+Pinging 172.18.0.101 with 32 bytes of data:
+Sucess
+
+Ping statistics for 172.18.0.101:
+    Packets: Sent = 1, Received = 1, Lost = 0 (0% loss),
+Approximate round trip times in milli-seconds:
+    Minimum = 0ms, Maximum = 0ms, Average = 0ms
+
+
+Pinging 172.18.0.100 with 32 bytes of data:
+Sucess
+
+Ping statistics for 172.18.0.100:
+    Packets: Sent = 1, Received = 1, Lost = 0 (0% loss),
+Approximate round trip times in milli-seconds:
+    Minimum = 0ms, Maximum = 0ms, Average = 0ms
+
+Pinging 172.18.0.101 with 32 bytes of data:
+Reply from 172.18.0.101: bytes=32 time=2ms TTL=128
+
+Ping statistics for 172.18.0.101:
+    Packets: Sent = 1, Received = 1, Lost = 0 (0% loss),
+Approximate round trip times in milli-seconds:
+    Minimum = 2ms, Maximum = 2ms, Average = 2ms
+
+Pinging 172.18.0.102 with 32 bytes of data:
+Reply from 172.18.0.102: bytes=32 time=1ms TTL=128
+
+Ping statistics for 172.18.0.102:
+    Packets: Sent = 1, Received = 1, Lost = 0 (0% loss),
+Approximate round trip times in milli-seconds:
+    Minimum = 1ms, Maximum = 1ms, Average = 1ms
+
+Pinging 172.18.0.103 with 32 bytes of data:
+Sucess
+
+Ping statistics for 172.18.0.103:
+    Packets: Sent = 1, Received = 1, Lost = 0 (0% loss),
+Approximate round trip times in milli-seconds:
+    Minimum = 0ms, Maximum = 0ms, Average = 0ms
+
+Pinging 172.18.0.104 with 32 bytes of data:
+Sucess
+
+Ping statistics for 172.18.0.104:
+    Packets: Sent = 1, Received = 1, Lost = 0 (0% loss),
+Approximate round trip times in milli-seconds:
+    Minimum = 0ms, Maximum = 0ms, Average = 0ms
+
+Pinging 172.18.0.120 with 32 bytes of data:
+Sucess
+
+Ping statistics for 172.18.0.120:
+    Packets: Sent = 1, Received = 1, Lost = 0 (0% loss),
+Approximate round trip times in milli-seconds:
+    Minimum = 0ms, Maximum = 0ms, Average = 0ms
+
+Pinging 172.18.0.121 with 32 bytes of data:
+Sucess
+
+Ping statistics for 172.18.0.121:
+    Packets: Sent = 1, Received = 1, Lost = 0 (0% loss),
+Approximate round trip times in milli-seconds:
+    Minimum = 0ms, Maximum = 0ms, Average = 0ms
+
+Pinging 172.18.0.122 with 32 bytes of data:
+Sucess
+
+Ping statistics for 172.18.0.122:
+    Packets: Sent = 1, Received = 1, Lost = 0 (0% loss),
+Approximate round trip times in milli-seconds:
+    Minimum = 0ms, Maximum = 0ms, Average = 0ms
+
+Pinging 172.18.0.123 with 32 bytes of data:
+Sucess
+
+Ping statistics for 172.18.0.123:
+    Packets: Sent = 1, Received = 1, Lost = 0 (0% loss),
+Approximate round trip times in milli-seconds:
+    Minimum = 0ms, Maximum = 0ms, Average = 0ms
+Pinging 172.18.0.100 with 32 bytes of data:
+Sucess
+
+Ping statistics for 172.18.0.100:
+    Packets: Sent = 1, Received = 1, Lost = 0 (0% loss),
+Approximate round trip times in milli-seconds:
+    Minimum = 0ms, Maximum = 0ms, Average = 0ms
+
+Pinging 172.18.0.101 with 32 bytes of data:
+Sucess
+
+Ping statistics for 172.18.0.101:
+    Packets: Sent = 1, Received = 1, Lost = 0 (0% loss),
+Approximate round trip times in milli-seconds:
+    Minimum = 0ms, Maximum = 0ms, Average = 0ms
+
+Pinging 172.18.0.102 with 32 bytes of data:
+Sucess
+
+Ping statistics for 172.18.0.102:
+    Packets: Sent = 1, Received = 1, Lost = 0 (0% loss),
+Approximate round trip times in milli-seconds:
+    Minimum = 0ms, Maximum = 0ms, Average = 0ms
+
+Pinging 172.18.0.103 with 32 bytes of data:
+Sucess
+
+Ping statistics for 172.18.0.103:
+    Packets: Sent = 1, Received = 1, Lost = 0 (0% loss),
+Approximate round trip times in milli-seconds:
+    Minimum = 0ms, Maximum = 0ms, Average = 0ms
+
+Pinging 172.18.0.104 with 32 bytes of data:
+Sucess
+
+Ping statistics for 172.18.0.104:
+    Packets: Sent = 1, Received = 1, Lost = 0 (0% loss),
+Approximate round trip times in milli-seconds:
+    Minimum = 0ms, Maximum = 0ms, Average = 0ms
+
+Pinging 172.18.0.120 with 32 bytes of data:
+Reply from 172.18.0.120: bytes=32 time=1ms TTL=128
+
+Ping statistics for 172.18.0.120:
+    Packets: Sent = 1, Received = 1, Lost = 0 (0% loss),
+Approximate round trip times in milli-seconds:
+    Minimum = 1ms, Maximum = 1ms, Average = 1ms
+
+Pinging 172.18.0.121 with 32 bytes of data:
+Sucess
+
+Ping statistics for 172.18.0.121:
+    Packets: Sent = 1, Received = 1, Lost = 0 (0% loss),
+Approximate round trip times in milli-seconds:
+    Minimum = 0ms, Maximum = 0ms, Average = 0ms
+
+Pinging 172.18.0.122 with 32 bytes of data:
+Reply from 172.18.0.122: bytes=32 time=1ms TTL=128
+
+Ping statistics for 172.18.0.122:
+    Packets: Sent = 1, Received = 1, Lost = 0 (0% loss),
+Approximate round trip times in milli-seconds:
+    Minimum = 1ms, Maximum = 1ms, Average = 1ms
+
+</consoleOutput>
