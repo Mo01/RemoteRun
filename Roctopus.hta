@@ -177,7 +177,7 @@
 			<div class="available-licenses">
 				<h4>Available licenses</h4>
 				<span>TestComplete</span><span class="license-count" id="tcLicenses">1</span>
-				<br/>
+				<br />
 				<span>TestExecute</span><span class="license-count" id="teLicenses">3</span>
 			</div>
 			<center>
@@ -210,6 +210,7 @@
 					</select>
 				</div>
 				
+				<!-- todo: add scroll bar for when list gets too big; and only visible when list is too big -->
 				<table class="table-striped">
 					<thead>
 						<tr>
@@ -238,12 +239,15 @@
     for (var i = 0; i < remoteMachines.length; i++) {
         var row = tableBody.insertRow(-1);
         for (var key in remoteMachines[i].htmlProperties) {
-            var cell = row.insertCell(-1);
+            var cell = row.insertCell(-1); 
             cell.innerHTML = remoteMachines[i].htmlProperties[key];
+			if (key == "btnRun") {
+				cell.align = "center";
+			}
         }
 
         if (!pingMachine(remoteMachines[i].ip)) {
-            document.getElementById("machineStatus" + i).innerHTML = "machine down";
+            document.getElementById("machineStatus" + i).innerHTML = "unable to ping";
         }
     }
 	
@@ -262,7 +266,7 @@
     
     function readLinesFromFile(filePath) {
         var fso = new ActiveXObject("Scripting.FileSystemObject");
-		var fileHandle = fso.OpenTextFile(tempFilePath);
+		var fileHandle = fso.OpenTextFile(filePath);
 		var lines = fileHandle.ReadAll();
 		fileHandle.Close();
 		return lines;
