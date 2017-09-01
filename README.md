@@ -13,8 +13,9 @@ An application that will remotely run certain tasks from a predefined list of re
 - [x] For Run button table header, put in the name of the test that is selected
 - [x] Add available licenses section; TestComplete and TestExecute
 - [x] Create a hyperlink for each QA Machine to run Remote Desktop through the command line
-- [ ] powershell command to run test
-- [ ] powershell command to check who is logged in
-- [ ] powershell command to check if testcomplete/testexecute is running (if running decrement license count)
-- [x] ping command to check if machine is up
+- [ ] Powershell command to run test
+- [ ] Powershell command to check who is logged in
+- [ ] Powershell command to check if testcomplete/testexecute is running (if running decrement license count)
+- [x] Ping command to check if machine is up
 - [x] CSS
+- [ ] Externalize javascript; and maybe CSS (\\Valhalla\Shared\QA\Automation\Roctopus\[js&css])

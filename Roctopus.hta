@@ -33,6 +33,7 @@
 			v10: "10"
 		};
 		
+		/* I MIGHT NOT NEED THESE
 		var platforms = {
 			desktop: "Desktop",
 			android: "Android",
@@ -44,6 +45,7 @@
 			performance: "Performance",
 			regression: "Regression"
 		}
+		*/
 
 		function RemoteMachine(sServerModel, sComputerName, sOS, sArchitecture, sIP) {
 			RemoteMachine.Count++;
@@ -214,15 +216,15 @@
 				<table class="table-striped">
 					<thead>
 						<tr>
-							<th>#</th>
-							<th>Sever Model</th>
-							<th>Computer Name</th>
-							<th>OS</th>
-							<th>Arch.</th>
-							<th>IP Address</th>
-							<th>Password</th>
-							<th>Status</th>
-							<th id="tableHeaderTestName"></th>
+							<th class="text-center">#</th>
+							<th class="text-center">Sever Model</th>
+							<th class="text-center">Computer Name</th>
+							<th class="text-center">OS</th>
+							<th class="text-center">Arch.</th>
+							<th class="text-center">IP Address</th>
+							<th class="text-center">Password</th>
+							<th class="text-center">Status</th>
+							<th id="tableHeaderTestName" class="text-center"></th>
 						</tr>
 					</thead>
 					<tbody id="tableBody">
@@ -247,7 +249,7 @@
         }
 
         if (!pingMachine(remoteMachines[i].ip)) {
-            document.getElementById("machineStatus" + i).innerHTML = "unable to ping";
+            setMachineStatus(id, "Unable to ping");
         }
     }
 	
@@ -255,6 +257,10 @@
         runShell(['%comspec% /c ping ' + ip + ' -n 1 -w 100 > ' + tempFilePath]);
 		var pingOutput = readLinesFromFile(tempFilePath);
 		return pingOutput.indexOf("Reply") > 0;
+	}
+	
+	function setMachineStatus(id, status) {
+		document.getElementById("machineStatus" + i).innerHTML = status;
 	}
     
     function runShell(arrCommands) {
@@ -293,7 +299,10 @@
 	
 	function onRunTest(id) {
 		//todo: add logic to run test
-        alert('Run ' + tableHeaderTestName.innerHTML + ' on ' + remoteMachines[id].computerName);
+		var test = tableHeaderTestName.innerHTML;
+		if (test != "" && test != undefined) {
+			alert('Run ' + tableHeaderTestName.innerHTML + ' on ' + remoteMachines[id].computerName);
+		}
 	}
 	
 	function onTestSelectionChanged(element) {
