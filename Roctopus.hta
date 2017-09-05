@@ -249,7 +249,7 @@
         }
 
         if (!pingMachine(remoteMachines[i].ip)) {
-            setMachineStatus(id, "Unable to ping");
+            setMachineStatus(i, "Unable to ping");
         }
     }
 	
@@ -273,7 +273,7 @@
     function readLinesFromFile(filePath) {
         var fso = new ActiveXObject("Scripting.FileSystemObject");
 		var fileHandle = fso.OpenTextFile(filePath);
-		var lines = fileHandle.ReadAll();
+		var lines = fileHandle.AtEndOfStream ? "" : fileHandle.ReadAll();
 		fileHandle.Close();
 		return lines;
     }
