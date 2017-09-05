@@ -1,11 +1,10 @@
 <!DOCTYPE html>
 <html>
-
 <head>
 	<meta http-equiv="X-UA-Compatible" content="IE=9" />
 	<meta name="viewport" content="width=device-width, initial-scale=1" />
 	<title id="title">Roctopus</title>
-	<HTA:APPLICATION ID="oHTA" VERSION="1.0.0.23" APPLICATIONNAME="Roctopus Salient.VMS.SUT" BORDER="Dialog" CAPTION="Yes" SHOWINTASKBAR="Yes" SINGLEINSTANCE="Yes" SYSMENU="Yes" WINDOWSTATE="Normal" SCROLL="No" SCROLLFLAT="No" INNERBORDER="No" SELECTION="No" MAXIMIZEBUTTON="No" MINIMIZEBUTTON="Yes" NAVIGABLE="Yes" CONTEXTMENU="Yes" />
+	<HTA:APPLICATION ID="oHTA" VERSION="1.0.0.24" APPLICATIONNAME="Roctopus Salient.VMS.SUT" BORDER="Dialog" CAPTION="Yes" SHOWINTASKBAR="Yes" SINGLEINSTANCE="Yes" SYSMENU="Yes" WINDOWSTATE="Normal" SCROLL="No" SCROLLFLAT="No" INNERBORDER="No" SELECTION="No" MAXIMIZEBUTTON="No" MINIMIZEBUTTON="Yes" NAVIGABLE="Yes" CONTEXTMENU="Yes" />
 	
 	<link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css">
 	<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.2.1/jquery.min.js"></script>
@@ -14,6 +13,11 @@
 	<script language="javascript" type="text/javascript">
 		
 		title.innerHTML += " " + oHTA.version;
+		
+		var filePath = document.location.href.replace("file:///", "");
+        
+        var tempFilePath = new ActiveXObject("Scripting.FileSystemObject").GetSpecialFolder(2) +
+        				   "\\RoctopusConsoleRedirect.tmp";
 		
 		var architecture = {
 			x64: "x64",
@@ -29,6 +33,7 @@
 			v10: "10"
 		};
 		
+		/* I MIGHT NOT NEED THESE
 		var platforms = {
 			desktop: "Desktop",
 			android: "Android",
@@ -40,6 +45,7 @@
 			performance: "Performance",
 			regression: "Regression"
 		}
+		*/
 
 		function RemoteMachine(sServerModel, sComputerName, sOS, sArchitecture, sIP) {
 			RemoteMachine.Count++;
@@ -62,7 +68,7 @@
 				ip: '<a href="javascript:remoteDesktop(' + id + ')" title="remote in">' + this.ip + '</a>',
 				txtBoxPassword: '<input type="password" id="txtPassword' + id + '" class="form-control" onKeyUp="onTxtPasswordKeyUp(' + id + ')" />',
 				status: '<span id="machineStatus' + id +'"></span>',
-				btnRun: '<input type="button" class="btn btn-info" value="Run Test" onClick="onRunTest(' + id + ')" />'
+				btnRun: '<input type="button" class="btn btn-danger" value="Run Test" onClick="onRunTest(' + id + ')" align="middle" />'
 			};
 		}
 		// Static property.
@@ -117,6 +123,7 @@
 		
 		.dropdown-tests {
 			margin-bottom: 15px;
+			width: 150px;
 		}
 		
 		.license-count {
@@ -172,44 +179,52 @@
 			<div class="available-licenses">
 				<h4>Available licenses</h4>
 				<span>TestComplete</span><span class="license-count" id="tcLicenses">1</span>
-				<br/>
+				<br />
 				<span>TestExecute</span><span class="license-count" id="teLicenses">3</span>
 			</div>
 			<center>
-				
 				<div class="dropdown-tests">
-					<select id="sutSelection">
-					    <option value="Desktop Acceptance">Desktop Acceptance</option>
-						<option value="Desktop Performance">Desktop Performance</option>
-					    <option value="Desktop Regression">Desktop Regression</option>
-					    <option value="Android Acceptance">Android Acceptance</option>
-					    <option value="Android Regression">Android Regression</option>
-						<option value="iOS Acceptance">iOS Acceptance</option>
-					    <option value="iOS Regression">iOS Regression</option>
-					</select>
-					
-					<!-- todo: this dropdown needs to be populated based on the first dropdown selection -->
-					<select onChange="onChangeTest(this);">
-						<option value="volvo"></option>
-					    <option value="volvo">Volvo</option>
-					    <option value="saab">Saab</option>
-					    <option value="mercedes">Mercedes</option>
-					    <option value="audi">Audi</option>
+					<select class="form-control" onChange="onTestSelectionChanged(this);">
+						<option value="">Select a test...</option>
+					    <option disabled="disabled">Desktop</option>
+						<option disabled="disabled">&nbsp;&nbsp;Acceptance</option>
+						<option value="Desktop Acceptance: Test 1">&nbsp;&nbsp;&nbsp;Test 1</option>
+						<option value="Desktop Acceptance: Test 2">&nbsp;&nbsp;&nbsp;Test 2</option>
+						<option value="Desktop Acceptance: Test 3">&nbsp;&nbsp;&nbsp;Test 3</option>
+						<option disabled="disabled">&nbsp;&nbsp;Performance</option>
+						<option value="Desktop Performance: Test 1">&nbsp;&nbsp;&nbsp;Test 1</option>
+						<option value="Desktop Performance: Test 2">&nbsp;&nbsp;&nbsp;Test 2</option>
+					    <option disabled="disabled">&nbsp;&nbsp;Regression</option>
+						<option value="Desktop Regression: Test 1">&nbsp;&nbsp;&nbsp;Test 1</option>
+						<option value="Desktop Regression: Test 2">&nbsp;&nbsp;&nbsp;Test 2</option>
+						<option disabled="disabled">---------------------------</option>
+						<option disabled="disabled">Android</option>
+					    <option disabled="disabled">&nbsp;&nbsp;Acceptance</option>
+						<option value="Android Acceptance: Test 1">&nbsp;&nbsp;&nbsp;Test 1</option>
+					    <option disabled="disabled">&nbsp;&nbsp;Regression</option>
+						<option value="Android Regression: Test 1">&nbsp;&nbsp;&nbsp;Test 1</option>
+						<option disabled="disabled">---------------------------</option>
+						<option disabled="disabled">iOS</option>
+						<option disabled="disabled">&nbsp;&nbsp;Acceptance</option>
+						<option value="iOS Acceptance: Test 1">&nbsp;&nbsp;&nbsp;Test 1</option>
+					    <option disabled="disabled">&nbsp;&nbsp;Regression</option>
+						<option value="iOS Regression: Test 1">&nbsp;&nbsp;&nbsp;Test 1</option>
 					</select>
 				</div>
 				
+				<!-- todo: add scroll bar for when list gets too big; and only visible when list is too big -->
 				<table class="table-striped">
 					<thead>
 						<tr>
-							<th>#</th>
-							<th>Sever Model</th>
-							<th>Computer Name</th>
-							<th>OS</th>
-							<th>Arch.</th>
-							<th>IP Address</th>
-							<th>Password</th>
-							<th>Status</th>
-							<th id="testToRun"></th>
+							<th class="text-center">#</th>
+							<th class="text-center">Sever Model</th>
+							<th class="text-center">Computer Name</th>
+							<th class="text-center">OS</th>
+							<th class="text-center">Arch.</th>
+							<th class="text-center">IP Address</th>
+							<th class="text-center">Password</th>
+							<th class="text-center">Status</th>
+							<th id="tableHeaderTestName" class="text-center"></th>
 						</tr>
 					</thead>
 					<tbody id="tableBody">
@@ -222,24 +237,58 @@
 
 
 <script language="javascript" type="text/javascript">
+	
+    for (var i = 0; i < remoteMachines.length; i++) {
+        var row = tableBody.insertRow(-1);
+        for (var key in remoteMachines[i].htmlProperties) {
+            var cell = row.insertCell(-1); 
+            cell.innerHTML = remoteMachines[i].htmlProperties[key];
+			if (key == "btnRun") {
+				cell.align = "center";
+			}
+        }
 
-	for (var i = 0; i < remoteMachines.length; i++) {
-		var row = tableBody.insertRow(-1);
-		for (var key in remoteMachines[i].htmlProperties) {
-			var cell = row.insertCell(-1);
-			cell.innerHTML = remoteMachines[i].htmlProperties[key];
-		}
-		
-		if (!pingMachine(remoteMachines[i].ip)) {
-			document.getElementById("machineStatus" + i).innerHTML = "machine down";
-		}
+        if (!pingMachine(remoteMachines[i].ip)) {
+            setMachineStatus(id, "Unable to ping");
+        }
+    }
+	
+	function pingMachine(ip) {
+        runShell(['%comspec% /c ping ' + ip + ' -n 1 -w 100 > ' + tempFilePath]);
+		var pingOutput = readLinesFromFile(tempFilePath);
+		return pingOutput.indexOf("Reply") > 0;
 	}
 	
-	function pingMachine(ip)
-	{
-		var wshShell = new ActiveXObject("WScript.Shell");
-    	var pingOutput = wshShell.Exec('ping ' + ip + ' -n 1 -w 100').StdOut.ReadAll();
-		return !(pingOutput.indexOf("timed out") >= 0);
+	function setMachineStatus(id, status) {
+		document.getElementById("machineStatus" + i).innerHTML = status;
+	}
+    
+    function runShell(arrCommands) {
+        var wshShell = new ActiveXObject("WScript.Shell");
+        arrCommands.forEach(function(command) {
+            wshShell.Run(command, 0, true);
+        });
+    }
+    
+    function readLinesFromFile(filePath) {
+        var fso = new ActiveXObject("Scripting.FileSystemObject");
+		var fileHandle = fso.OpenTextFile(filePath);
+		var lines = fileHandle.ReadAll();
+		fileHandle.Close();
+		return lines;
+    }
+	
+	function remoteDesktop(id) {
+		var password = document.getElementById("txtPassword" + id).value;
+		if (password == "" || password == undefined) {
+			alert("Please provide a password");
+			return;
+		}
+        
+        runShell(['cmdkey /generic:' + remoteMachines[id].computerName +
+                  ' /user:"' + remoteMachines[id].username +
+                  '" /pass:"' + password + '"',
+                  'mstsc /v:' + remoteMachines[id].computerName + ' /admin /fullscreen']);
 	}
 	
 	function onTxtPasswordKeyUp(id) {
@@ -248,31 +297,20 @@
 		}
 	}
 	
-	function remoteDesktop(id) {
-		var password = document.getElementById("txtPassword" + id).value;
-		if (password == "" || password == undefined) {
-			alert("Please provide a password");
-			return;
-		}
-
-		var wshShell = new ActiveXObject("WScript.Shell");
-		wshShell.Run('cmdkey /generic:' + remoteMachines[id].computerName + ' /user:"' + remoteMachines[id].username + '" /pass:"' + password + '"');
-		wshShell.Run('mstsc /v:' + remoteMachines[id].computerName + ' /admin /fullscreen');
-
-	}
-	
 	function onRunTest(id) {
-		alert(remoteMachines[id].computerName);
+		//todo: add logic to run test
+		var test = tableHeaderTestName.innerHTML;
+		if (test != "" && test != undefined) {
+			alert('Run ' + tableHeaderTestName.innerHTML + ' on ' + remoteMachines[id].computerName);
+		}
 	}
 	
-	function onChangeTest(element) {
-		testToRun.innerHTML = sutSelection.value + ": " + element.value;
+	function onTestSelectionChanged(element) {
+		tableHeaderTestName.innerHTML = element.value;
 	}
-
 </script>
 
 <script language="vbscript" type="text/vbscript">
 
 </script>
-
 </html>
