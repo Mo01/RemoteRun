@@ -9,83 +9,8 @@
 	<link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css">
 	<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.2.1/jquery.min.js"></script>
 	<script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/js/bootstrap.min.js"></script>
+	<script src="js/Models.js"></script>
 	
-	<script language="javascript" type="text/javascript">
-		
-		title.innerHTML += " " + oHTA.version;
-		
-		var filePath = document.location.href.replace("file:///", "");
-        
-        var tempFilePath = new ActiveXObject("Scripting.FileSystemObject").GetSpecialFolder(2) +
-        				   "\\RoctopusConsoleRedirect.tmp";
-		
-		var architecture = {
-			x64: "x64",
-			x32: "x32"
-		};
-
-		var os = {
-			v2008: "Server 2008",
-			v2012: "Server 2012",
-			v7: "7",
-			v8: "8",
-			v81: "8.1",
-			v10: "10"
-		};
-		
-		/* I MIGHT NOT NEED THESE
-		var platforms = {
-			desktop: "Desktop",
-			android: "Android",
-			iOs: "iOS"
-		}
-		
-		var testProjectTypes = {
-			acceptance: "Acceptance",
-			performance: "Performance",
-			regression: "Regression"
-		}
-		*/
-
-		function RemoteMachine(sServerModel, sComputerName, sOS, sArchitecture, sIP) {
-			RemoteMachine.Count++;
-
-			this.index = RemoteMachine.Count;
-			this.serverModel = sServerModel;
-			this.computerName = sComputerName;
-			this.username = "Administrator";
-			this.os = sOS;
-			this.architecture = sArchitecture;
-			this.ip = sIP;
-
-			var id = RemoteMachine.Count - 1;
-			this.htmlProperties = {
-				index: this.index,
-				serverModel: this.serverModel,
-				computerName: "<b>" + this.computerName + "</b>",
-				os: this.os,
-				architecture: this.architecture,
-				ip: '<a href="javascript:remoteDesktop(' + id + ')" title="remote in">' + this.ip + '</a>',
-				txtBoxPassword: '<input type="password" id="txtPassword' + id + '" class="form-control" onKeyUp="onTxtPasswordKeyUp(' + id + ')" />',
-				status: '<span id="machineStatus' + id +'"></span>',
-				btnRun: '<input type="button" class="btn btn-danger" value="Run Test" onClick="onRunTest(' + id + ')" align="middle" />'
-			};
-		}
-		// Static property.
-		RemoteMachine.Count = 0;
-		
-		var remoteMachines = [
-			new RemoteMachine("PowerProR", "WIN-HOHNKC8JBI8", os.v2012, architecture.x64, "172.18.0.100"),
-			new RemoteMachine("PowerPro", "QA-POWERPRO-RB", os.v7, architecture.x64, "172.18.0.101"),
-			new RemoteMachine("PowerProR", "DESKTOP-HHC3INQ", os.v10, architecture.x64, "172.18.0.102"),
-			new RemoteMachine("RM1100", "QA_RM1100", os.v81, architecture.x64, "172.18.0.103"),
-			new RemoteMachine("RM1000R9_R10XMP", "QA-RM1000", os.v7, architecture.x32, "172.18.0.104"),
-			new RemoteMachine("PowerUltra", "QA_PowerUltra", os.v2008, architecture.x64, "172.18.0.120"),
-			new RemoteMachine("PowerPlus", "QA-PowerPlus", os.v2008, architecture.x64, "172.18.0.121"),
-			new RemoteMachine("PowerPlus", "WIN-V379E1QUSJ4", os.v2008, architecture.x64, "172.18.0.122"),
-			new RemoteMachine("PowerPlus", "Win2012", os.v2012, architecture.x64, "172.18.0.123"),
-		];
-	</script>
 	<style>
 		* {
 			margin: 0;
@@ -236,79 +161,7 @@
 </body>
 
 
-<script language="javascript" type="text/javascript">
-	
-    for (var i = 0; i < remoteMachines.length; i++) {
-        var row = tableBody.insertRow(-1);
-        for (var key in remoteMachines[i].htmlProperties) {
-            var cell = row.insertCell(-1); 
-            cell.innerHTML = remoteMachines[i].htmlProperties[key];
-			if (key == "btnRun") {
-				cell.align = "center";
-			}
-        }
-
-        if (!pingMachine(remoteMachines[i].ip)) {
-            setMachineStatus(i, "Unable to ping");
-        }
-    }
-	
-	function pingMachine(ip) {
-        runShell(['%comspec% /c ping ' + ip + ' -n 1 -w 100 > ' + tempFilePath]);
-		var pingOutput = readLinesFromFile(tempFilePath);
-		return pingOutput.indexOf("Reply") > 0;
-	}
-	
-	function setMachineStatus(id, status) {
-		document.getElementById("machineStatus" + i).innerHTML = status;
-	}
-    
-    function runShell(arrCommands) {
-        var wshShell = new ActiveXObject("WScript.Shell");
-        arrCommands.forEach(function(command) {
-            wshShell.Run(command, 0, true);
-        });
-    }
-    
-    function readLinesFromFile(filePath) {
-        var fso = new ActiveXObject("Scripting.FileSystemObject");
-		var fileHandle = fso.OpenTextFile(filePath);
-		var lines = fileHandle.AtEndOfStream ? "" : fileHandle.ReadAll();
-		fileHandle.Close();
-		return lines;
-    }
-	
-	function remoteDesktop(id) {
-		var password = document.getElementById("txtPassword" + id).value;
-		if (password == "" || password == undefined) {
-			alert("Please provide a password");
-			return;
-		}
-        
-        runShell(['cmdkey /generic:' + remoteMachines[id].computerName +
-                  ' /user:"' + remoteMachines[id].username +
-                  '" /pass:"' + password + '"',
-                  'mstsc /v:' + remoteMachines[id].computerName + ' /admin /fullscreen']);
-	}
-	
-	function onTxtPasswordKeyUp(id) {
-		if (event.keyCode == 13) {
-			remoteDesktop(id);
-		}
-	}
-	
-	function onRunTest(id) {
-		//todo: add logic to run test
-		var test = tableHeaderTestName.innerHTML;
-		if (test != "" && test != undefined) {
-			alert('Run ' + tableHeaderTestName.innerHTML + ' on ' + remoteMachines[id].computerName);
-		}
-	}
-	
-	function onTestSelectionChanged(element) {
-		tableHeaderTestName.innerHTML = element.value;
-	}
-</script>
+<script src="js/Main.js"></script>
 
 <script language="vbscript" type="text/vbscript">
 
