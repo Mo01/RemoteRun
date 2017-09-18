@@ -14,7 +14,7 @@ An application that will remotely run certain tasks from a predefined list of re
 - [x] Add available licenses section; TestComplete and TestExecute
 - [x] Create a hyperlink for each QA Machine to run Remote Desktop through the command line
 - [ ] Powershell command to run test
-- [ ] Powershell command to check who is logged in
+- [x] Powershell command to see if someone is logged in
 - [ ] Powershell command to check if testcomplete/testexecute is running (if running decrement license count)
 - [x] Ping command to check if machine is up
 - [x] CSS

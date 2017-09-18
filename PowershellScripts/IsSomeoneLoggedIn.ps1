@@ -3,15 +3,24 @@ Param(
   [string]$password
 )
 
-$secpasswd = ConvertTo-SecureString $password -AsPlainText -Force
-$mycreds = New-Object System.Management.Automation.PSCredential ($computer + "\Administrator", $secpasswd)
+$userName = "Administrator"
+$securePassword = ConvertTo-SecureString $password -AsPlainText -Force
+$credential = New-Object System.Management.Automation.PSCredential -ArgumentList $userName, $securePassword
 
-$result = Invoke-Command -Computername QA_PowerUltra -Credential $mycreds -Scriptblock {quser}
-if ($result -match "Active")
+$result = Invoke-Command -Computername $computer -Credential $credential -Scriptblock {quser}
+
+if ([string]::IsNullOrEmpty($Error[0]))
 {
-    $true
+    if ($result -match "Active")
+    {
+        $true
+    }
+    else
+    {
+        $false
+    }
 }
 else
 {
-    $false
+    "Error"
 }
