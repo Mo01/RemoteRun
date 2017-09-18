@@ -68,8 +68,9 @@
 			new RemoteMachine("PowerProR", "DESKTOP-HHC3INQ", os.v10, architecture.x64, "172.18.0.102"),
 			new RemoteMachine("RM1100", "QA_RM1100", os.v81, architecture.x64, "172.18.0.103"),
 			new RemoteMachine("RM1000R9_R10XMP", "QA-RM1000", os.v7, architecture.x32, "172.18.0.104"),
-			new RemoteMachine("PowerUltra", "QA_PowerUltra", os.v2008, architecture.x64, "172.18.0.120"),
+			new RemoteMachine("PowerUltra", "QA-Ultra720-120", os.v2008, architecture.x64, "172.18.0.120"),
 			new RemoteMachine("PowerPlus", "QA-PowerPlus", os.v2008, architecture.x64, "172.18.0.121"),
 			new RemoteMachine("PowerPlus", "WIN-V379E1QUSJ4", os.v2008, architecture.x64, "172.18.0.122"),
 			new RemoteMachine("PowerPlus", "Win2012", os.v2012, architecture.x64, "172.18.0.123"),
+			new RemoteMachine("PowerUltra", "QA-Ultra720-126", os.v2012, architecture.x64, "172.18.0.126"),
 		];
