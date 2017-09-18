@@ -18,4 +18,4 @@ An application that will remotely run certain tasks from a predefined list of re
 - [ ] Powershell command to check if testcomplete/testexecute is running (if running decrement license count)
 - [x] Ping command to check if machine is up
 - [x] CSS
-- [ ] Externalize javascript; and maybe CSS (\\Valhalla\Shared\QA\Automation\Roctopus\[js&css])
+- [x] Externalize javascript and CSS
