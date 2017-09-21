@@ -22,5 +22,5 @@ if ([string]::IsNullOrEmpty($Error[0]))
 }
 else
 {
-    "Error"
+    "`r`nError"
 }

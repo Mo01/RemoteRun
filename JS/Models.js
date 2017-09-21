@@ -3,8 +3,10 @@ title.innerHTML += " " + oHTA.version;
 
 var filePath = document.location.href.replace("file:///", "");
 
-var tempFilePath = new ActiveXObject("Scripting.FileSystemObject").GetSpecialFolder(2) +
+var TEMP_FILE_PATH = new ActiveXObject("Scripting.FileSystemObject").GetSpecialFolder(2) +
     "\\RoctopusConsoleRedirect.tmp";
+
+var LOGGED_IN_SCRIPT = "PowershellScripts\\IsSomeoneLoggedIn.ps1";
 
 var architecture = {
     x64: "x64",
@@ -55,7 +57,7 @@ function RemoteMachine(sServerModel, sComputerName, sOS, sArchitecture, sIP) {
         ip: '<a href="javascript:remoteDesktop(' + id + ')" title="remote in">' + this.ip + '</a>',
         txtBoxPassword: '<input type="password" id="txtPassword' + id + '" class="form-control" onKeyUp="onTxtPasswordKeyUp(' + id + ')" />',
         status: '<span id="machineStatus' + id + '"></span>',
-        btnRun: '<input type="button" class="btn btn-danger" value="Run Test" onClick="onRunTest(' + id + ')" align="middle" />'
+        btnRun: '<input type="button" id="btnRun' + id + '" class="btn btn-danger" value="Run Test" onClick="onRunTest(' + id + ')" align="middle" />'
     };
 }
 // Static property.
@@ -68,7 +70,7 @@ var remoteMachines = [
     new RemoteMachine("RM1100", "QA_RM1100", os.v81, architecture.x64, "172.18.0.103"),
     new RemoteMachine("RM1000R9_R10XMP", "QA-RM1000", os.v7, architecture.x32, "172.18.0.104"),
     new RemoteMachine("PowerUltra", "QA-Ultra720-120", os.v2008, architecture.x64, "172.18.0.120"),
-    new RemoteMachine("PowerPlus", "QA-PowerPlus", os.v2008, architecture.x64, "172.18.0.121"),
+    new RemoteMachine("PowerPlus", "QA-Plus720-121", os.v2008, architecture.x64, "172.18.0.121"),
     new RemoteMachine("PowerPlus", "WIN-V379E1QUSJ4", os.v2008, architecture.x64, "172.18.0.122"),
     new RemoteMachine("PowerPlus", "Win2012", os.v2012, architecture.x64, "172.18.0.123"),
     new RemoteMachine("PowerUltra", "QA-Ultra720-126", os.v2012, architecture.x64, "172.18.0.126"),

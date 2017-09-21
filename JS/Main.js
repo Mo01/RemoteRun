@@ -9,7 +9,20 @@ for (var i = 0; i < remoteMachines.length; i++) {
 		}
 	}
 
-	if (!pingMachine(remoteMachines[i].ip)) {
+	if (!canPingMachine(remoteMachines[i].ip)) {
 		setMachineStatus(i, "Unable to ping");
 	}
+    
+    $('#btnRun' + i)
+        .click(function(event) {
+            var id = $(this).attr('id').replace('btnRun', '');
+            checkMachineStatus(id);
+        })
+        .click(function(event) {
+            var id = $(this).attr('id').replace('btnRun', '');
+            var status = getMachineStatus(id);
+            if (status == '' || status == undefined) {
+                alert('run test');
+            }
+        });
 }

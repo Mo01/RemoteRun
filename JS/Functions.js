@@ -1,12 +1,52 @@
 
-function pingMachine(ip) {
-	runShell(['%comspec% /c ping ' + ip + ' -n 1 -w 100 > ' + tempFilePath]);
-	var pingOutput = readLinesFromFile(tempFilePath);
+function checkMachineStatus(id) {
+    if (!canPingMachine(remoteMachines[id].ip)) {
+		setMachineStatus(id, "Unable to ping");
+	}
+    else if (isSomeoneLoggedIn(id)) {
+        setMachineStatus(id, "Someone is logged in");
+    }
+    else if (isTestExecuteRunning(id)) {
+        setMachineStatus(id, "TestExecute is running");
+    }
+}
+
+function canPingMachine(ip) {
+	runShell(['%comspec% /c ping ' + ip + ' -n 1 -w 100 > ' + TEMP_FILE_PATH]);
+	var pingOutput = readLinesFromFile(TEMP_FILE_PATH);
 	return pingOutput.indexOf("Reply") > 0;
 }
 
+function isSomeoneLoggedIn(id) {
+    var password = document.getElementById("txtPassword" + id).value;
+    if (password == "" || password == undefined) {
+		alert("Please provide a password");
+		return;
+	}
+    
+	runShell(['powershell -command Set-ExecutionPolicy Unrestricted',
+              'powershell "' + LOGGED_IN_SCRIPT + ' ' + remoteMachines[id].computerName + ' ' + password + '" > ' + TEMP_FILE_PATH]);
+	var loggedInOutput = readLinesFromFile(TEMP_FILE_PATH);
+    return loggedInOutput.toLowerCase() == 'true';
+}
+
+function isTestExecuteRunning(id) {
+    var password = document.getElementById("txtPassword" + id).value;
+    if (password == "" || password == undefined) {
+		alert("Please provide a password");
+		return;
+	}
+    
+    var isRunningOutput = 'false';
+    return isRunningOutput.toLowerCase() == 'true';
+}
+
+function getMachineStatus(id) {
+	return document.getElementById("machineStatus" + id).innerHTML;
+}
+
 function setMachineStatus(id, status) {
-	document.getElementById("machineStatus" + i).innerHTML = status;
+	document.getElementById("machineStatus" + id).innerHTML = status;
 }
 
 function runShell(arrCommands) {
