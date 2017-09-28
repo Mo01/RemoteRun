@@ -1,4 +1,8 @@
 
+title.innerHTML += " " + oHTA.version + "." + VERSION;
+
+window.resizeTo(1440 - 160, 790);
+
 for (var i = 0; i < remoteMachines.length; i++) {
 	var row = tableBody.insertRow(-1);
 	for (var key in remoteMachines[i].htmlProperties) {

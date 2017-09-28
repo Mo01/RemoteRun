@@ -1,5 +1,5 @@
 
-title.innerHTML += " " + oHTA.version;
+var VERSION = "0.0.28";
 
 var filePath = document.location.href.replace("file:///", "");
 
