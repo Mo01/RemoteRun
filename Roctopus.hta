@@ -19,9 +19,8 @@
 </head>
 
 <body>
-	<!-- Refresh Button: for development purposes only; comment out for production -->
     <form><button class="btn btn-success" type="submit" onClick="history.go()"><i class="glyphicon glyphicon-refresh"></i></button></form> 
-   
+    
 	<div class="container2">
 		<div class="content">
 			<div class="available-licenses">
@@ -30,33 +29,10 @@
 			</div>
 			<center>
 				<div class="dropdown-tests">
-					<select class="form-control" onChange="onTestSelectionChanged(this);">
-						<option value="">Select a test...</option>
-					    <option disabled="disabled">Desktop</option>
-						<option disabled="disabled">&nbsp;&nbsp;Acceptance</option>
-						<option value="Desktop Acceptance: Test 1">&nbsp;&nbsp;&nbsp;Test 1</option>
-						<option disabled="disabled">&nbsp;&nbsp;Performance</option>
-						<option value="Desktop Performance: Test 1">&nbsp;&nbsp;&nbsp;Test 1</option>
-						<option value="Desktop Performance: Test 2">&nbsp;&nbsp;&nbsp;Test 2</option>
-					    <option disabled="disabled">&nbsp;&nbsp;Regression</option>
-						<option value="Desktop Regression: Test 1">&nbsp;&nbsp;&nbsp;Test 1</option>
-						<option value="Desktop Regression: Test 2">&nbsp;&nbsp;&nbsp;Test 2</option>
-						<option disabled="disabled">---------------------------</option>
-						<option disabled="disabled">Android</option>
-					    <option disabled="disabled">&nbsp;&nbsp;Acceptance</option>
-						<option value="Android Acceptance: Test 1">&nbsp;&nbsp;&nbsp;Test 1</option>
-					    <option disabled="disabled">&nbsp;&nbsp;Regression</option>
-						<option value="Android Regression: Test 1">&nbsp;&nbsp;&nbsp;Test 1</option>
-						<option disabled="disabled">---------------------------</option>
-						<option disabled="disabled">iOS</option>
-						<option disabled="disabled">&nbsp;&nbsp;Acceptance</option>
-						<option value="iOS Acceptance: Test 1">&nbsp;&nbsp;&nbsp;Test 1</option>
-					    <option disabled="disabled">&nbsp;&nbsp;Regression</option>
-						<option value="iOS Regression: Test 1">&nbsp;&nbsp;&nbsp;Test 1</option>
+					<select id="tests-dropdown" class="form-control" onChange="onTestSelectionChanged(this);">
 					</select>
 				</div>
-				<!-- todo: move style to css -->
-				<div style="width:auto;height:534px;line-height:3em;overflow:auto;padding:5px;">
+				<div id="machines-container">
 					<table class="table-striped">
 						<thead>
 							<tr>
@@ -80,11 +56,6 @@
 	</div>
 </body>
 
-
 <script src="JS/Main.js"></script>
 <!-- <script src="\\valhalla\shared\QA\Automation\Roctopus\JS\Main.js"></script> -->
-
-<script language="vbscript" type="text/vbscript">
-
-</script>
 </html>

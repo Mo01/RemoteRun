@@ -3,6 +3,42 @@ var VERSION = "0.0.28";
 var TEMP_FILE_PATH = new ActiveXObject("Scripting.FileSystemObject").GetSpecialFolder(2) +
     "\\RoctopusConsoleRedirect.tmp";
 var LOGGED_IN_SCRIPT = "PowershellScripts\\IsSomeoneLoggedIn.ps1";
+var LIST_SEPARATOR = "---------------------------";
+var OPTION_INDENTOR = "&nbsp;&nbsp;";
+var OPTION_INDENTOR2 = "&nbsp;&nbsp;&nbsp;";
+
+var platform = {
+	Desktop: "Desktop",
+	Android: "Android",
+	iOs: "iOS"
+};
+		
+var testType = {
+	Acceptance: "Acceptance",
+	Performance: "Performance",
+	Regression: "Regression"
+};
+
+var tests = [
+    ["Select a test...", ""],
+    [platform.Desktop, undefined],
+    [OPTION_INDENTOR + testType.Acceptance, undefined],
+    [OPTION_INDENTOR2 + "Test 1", "Test 1"],
+    [OPTION_INDENTOR + testType.Regression, undefined],
+    [OPTION_INDENTOR2 + "Test 1", "Test 1"],
+    [OPTION_INDENTOR2 + "Test 2", "Test 2"],
+    [LIST_SEPARATOR, undefined],
+    [platform.Android, undefined],
+    [OPTION_INDENTOR + testType.Acceptance, undefined],
+    [OPTION_INDENTOR2 + "Test 1", "Test 1"],
+    [OPTION_INDENTOR + testType.Regression, undefined],
+    [OPTION_INDENTOR2 + "Test 2", "Test 2"],
+    [platform.iOs, undefined],
+    [OPTION_INDENTOR + testType.Acceptance, undefined],
+    [OPTION_INDENTOR2 + "Test 1", "Test 1"],
+    [OPTION_INDENTOR + testType.Regression, undefined],
+    [OPTION_INDENTOR2 + "Test 2", "Test 2"]
+];
 
 var architecture = {
     x64: "x64",
@@ -21,22 +57,8 @@ var os = {
 var type = {
 	PowerPlus: "PowerPlus",
 	PowerPro: "PowerPro",
-	PowerProR: "PowerProR",
-}
-
-/* I MIGHT NOT NEED THESE
-var platforms = {
-	desktop: "Desktop",
-	android: "Android",
-	iOs: "iOS"
-}
-		
-var testProjectTypes = {
-	acceptance: "Acceptance",
-	performance: "Performance",
-	regression: "Regression"
-}
-*/
+	PowerProR: "PowerProR"
+};
 
 function RemoteMachine(sServerModel, sComputerName, sOS, sArchitecture, sIP) {
     RemoteMachine.Count++;
@@ -75,5 +97,5 @@ var remoteMachines = [
     new RemoteMachine(type.PowerPlus, "QA-Plus720-121", os.v2008, architecture.x64, "172.18.0.121"),
     new RemoteMachine(type.PowerPlus, "QA-Plus-Ivy-122", os.v2008, architecture.x64, "172.18.0.122"),
     new RemoteMachine(type.PowerPlus, "Win2012", os.v2012, architecture.x64, "172.18.0.123"),
-    new RemoteMachine("PowerUltra", "QA-Ultra720-126", os.v2012, architecture.x64, "172.18.0.126"),
+    new RemoteMachine("PowerUltra", "QA-Ultra720-126", os.v2012, architecture.x64, "172.18.0.126")
 ];

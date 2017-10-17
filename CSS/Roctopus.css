@@ -42,6 +42,14 @@
     float: right;
 }
 
+#machines-container {
+    line-height:3em;
+    height:534px;
+    padding:5px;
+    overflow:auto;
+    width:auto;
+}
+
 body {
     font-family: Arial;
 }
