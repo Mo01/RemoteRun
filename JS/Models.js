@@ -51,7 +51,8 @@ var os = {
     v7: "7",
     v8: "8",
     v81: "8.1",
-    v10: "10"
+    v10: "10",
+	v10IoT : "10 IoT"
 };
 
 var type = {
@@ -95,7 +96,8 @@ var remoteMachines = [
     new RemoteMachine("RM1000R9_R10XMP", "QA-RM1000", os.v7, architecture.x32, "172.18.0.104"),
     new RemoteMachine("PowerUltra", "QA-Ultra720-120", os.v2008, architecture.x64, "172.18.0.120"),
     new RemoteMachine(type.PowerPlus, "QA-Plus720-121", os.v2008, architecture.x64, "172.18.0.121"),
-    new RemoteMachine(type.PowerPlus, "QA-Plus-Ivy-122", os.v2008, architecture.x64, "172.18.0.122"),
+    new RemoteMachine(type.PowerPlus, "QA-Plus520-122", os.v10, architecture.x64, "172.18.0.122"),
     new RemoteMachine(type.PowerPlus, "Win2012", os.v2012, architecture.x64, "172.18.0.123"),
+	new RemoteMachine(type.PowerPlus, "QA-Plus520-124", os.v10IoT, architecture.x64, "172.18.0.124"),
     new RemoteMachine("PowerUltra", "QA-Ultra720-126", os.v2012, architecture.x64, "172.18.0.126")
 ];
