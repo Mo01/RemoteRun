@@ -25,10 +25,6 @@
 				<span>TestExecute</span><span class="license-count" id="teLicenses">3</span>
 			</div>
 			<center>
-				<div class="dropdown-tests">
-					<select id="tests-dropdown" class="form-control" onChange="onTestSelectionChanged(this);">
-					</select>
-				</div>
 				<div id="machines-container">
 					<table class="table-striped">
 						<thead>
@@ -41,7 +37,10 @@
 								<th class="text-center">IP Address</th>
 								<th class="text-center">Password</th>
 								<th class="text-center">Status</th>
-								<th id="tableHeaderTestName" class="text-center"></th>
+								<th class="text-center">
+                                    <span id="spanTestName"></span>
+                                    <select id="tests-dropdown" class="form-control" onChange="onTestSelectionChanged(this);"></select>
+                                </th>
 							</tr>
 						</thead>
 						<tbody id="tableBody">

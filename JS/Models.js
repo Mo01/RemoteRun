@@ -1,5 +1,5 @@
 
-var VERSION = "0.0.30";
+var VERSION = "0.0.31";
 var TEMP_FILE_PATH = new ActiveXObject("Scripting.FileSystemObject").GetSpecialFolder(2) +
     "\\RoctopusConsoleRedirect.tmp";
 var LOGGED_IN_SCRIPT = "PowershellScripts\\IsSomeoneLoggedIn.ps1";
@@ -23,21 +23,22 @@ var tests = [
     ["Select a test...", ""],
     [platform.Desktop, undefined],
     [OPTION_INDENTOR + testType.Acceptance, undefined],
-    [OPTION_INDENTOR2 + "Test 1", "Test 1"],
+    [OPTION_INDENTOR2 + "Test 1", platform.Desktop + " " + testType.Acceptance + ": Test 1"],
     [OPTION_INDENTOR + testType.Regression, undefined],
-    [OPTION_INDENTOR2 + "Test 1", "Test 1"],
-    [OPTION_INDENTOR2 + "Test 2", "Test 2"],
+    [OPTION_INDENTOR2 + "Test 1", platform.Desktop + " " + testType.Regression + ": Test 1"],
+    [OPTION_INDENTOR2 + "Test 2", platform.Desktop + " " + testType.Regression + ": Test 2"],
     [LIST_SEPARATOR, undefined],
     [platform.Android, undefined],
     [OPTION_INDENTOR + testType.Acceptance, undefined],
-    [OPTION_INDENTOR2 + "Test 1", "Test 1"],
+    [OPTION_INDENTOR2 + "Test 1", platform.Android + " " + testType.Acceptance + ": Test 1"],
     [OPTION_INDENTOR + testType.Regression, undefined],
-    [OPTION_INDENTOR2 + "Test 2", "Test 2"],
+    [OPTION_INDENTOR2 + "Test 2", platform.Android + " " + testType.Regression + ": Test 2"],
+	[LIST_SEPARATOR, undefined],
     [platform.iOs, undefined],
     [OPTION_INDENTOR + testType.Acceptance, undefined],
-    [OPTION_INDENTOR2 + "Test 1", "Test 1"],
+    [OPTION_INDENTOR2 + "Test 1", platform.iOs + " " + testType.Acceptance + ": Test 1"],
     [OPTION_INDENTOR + testType.Regression, undefined],
-    [OPTION_INDENTOR2 + "Test 2", "Test 2"]
+    [OPTION_INDENTOR2 + "Test 2", platform.iOs + " " + testType.Regression + ": Test 2"]
 ];
 
 var architecture = {
@@ -56,9 +57,12 @@ var os = {
 };
 
 var type = {
-	PowerPlus: "PowerPlus",
-	PowerPro: "PowerPro",
-	PowerProR: "PowerProR"
+	powerPlus: "PowerPlus",
+	powerPro: "PowerPro",
+	powerProR: "PowerProR",
+	powerUltra: "PowerUltra",
+	rm1000: "RM1000",
+	rm1100: "RM1100"
 };
 
 function RemoteMachine(sServerModel, sComputerName, sOS, sArchitecture, sIP) {
@@ -89,15 +93,15 @@ function RemoteMachine(sServerModel, sComputerName, sOS, sArchitecture, sIP) {
 RemoteMachine.Count = 0;
 
 var remoteMachines = [
-    new RemoteMachine(type.PowerProR, "WIN-HOHNKC8JBI8", os.v2012, architecture.x64, "172.18.0.100"),
-    new RemoteMachine(type.PowerPro, "QA-POWERPRO-RB", os.v7, architecture.x64, "172.18.0.101"),
-    new RemoteMachine(type.PowerPro, "DESKTOP-HHC3INQ", os.v10, architecture.x64, "172.18.0.102"),
-    new RemoteMachine("RM1100", "QA_RM1100", os.v81, architecture.x64, "172.18.0.103"),
-    new RemoteMachine("RM1000R9_R10XMP", "QA-RM1000", os.v7, architecture.x32, "172.18.0.104"),
-    new RemoteMachine("PowerUltra", "QA-Ultra720-120", os.v2008, architecture.x64, "172.18.0.120"),
-    new RemoteMachine(type.PowerPlus, "QA-Plus720-121", os.v2008, architecture.x64, "172.18.0.121"),
-    new RemoteMachine(type.PowerPlus, "QA-Plus520-122", os.v10, architecture.x64, "172.18.0.122"),
-    new RemoteMachine(type.PowerPlus, "Win2012", os.v2012, architecture.x64, "172.18.0.123"),
-	new RemoteMachine(type.PowerPlus, "QA-Plus520-124", os.v10IoT, architecture.x64, "172.18.0.124"),
-    new RemoteMachine("PowerUltra", "QA-Ultra720-126", os.v2012, architecture.x64, "172.18.0.126")
+    new RemoteMachine(type.powerProR, "WIN-HOHNKC8JBI8", os.v2012, architecture.x64, "172.18.0.100"),
+    new RemoteMachine(type.powerPro, "QA-POWERPRO-RB", os.v7, architecture.x64, "172.18.0.101"),
+    new RemoteMachine(type.powerPro, "DESKTOP-HHC3INQ", os.v10, architecture.x64, "172.18.0.102"),
+    new RemoteMachine(type.rm1100, "QA_RM1100", os.v81, architecture.x64, "172.18.0.103"),
+    new RemoteMachine(type.rm1000, "QA-RM1000", os.v7, architecture.x32, "172.18.0.104"),
+    new RemoteMachine(type.powerUltra, "QA-Ultra720-120", os.v2008, architecture.x64, "172.18.0.120"),
+    new RemoteMachine(type.powerPlus, "QA-Plus720-121", os.v2008, architecture.x64, "172.18.0.121"),
+    new RemoteMachine(type.powerPlus, "QA-Plus520-122", os.v10, architecture.x64, "172.18.0.122"),
+    new RemoteMachine(type.powerPlus, "Win2012", os.v2012, architecture.x64, "172.18.0.123"),
+	new RemoteMachine(type.powerPlus, "QA-Plus520-124", os.v10IoT, architecture.x64, "172.18.0.124"),
+    new RemoteMachine(type.powerUltra, "QA-Ultra720-126", os.v2012, architecture.x64, "172.18.0.126")
 ];

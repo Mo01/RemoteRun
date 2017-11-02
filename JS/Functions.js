@@ -92,5 +92,5 @@ function onRunTest(id) {
 }
 
 function onTestSelectionChanged(element) {
-	tableHeaderTestName.innerHTML = element.value;
+	spanTestName.innerHTML = element.value.split(':')[0];
 }
