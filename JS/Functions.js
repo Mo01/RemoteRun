@@ -85,9 +85,9 @@ function onTxtPasswordKeyUp(id) {
 
 function onRunTest(id) {
 	//todo: add logic to run test
-	var test = tableHeaderTestName.innerHTML;
+	var test = spanTestName.innerHTML;
 	if (test != "" && test != undefined) {
-		alert('Run ' + tableHeaderTestName.innerHTML + ' on ' + remoteMachines[id].computerName);
+		alert('Run ' + spanTestName.innerHTML + ' on ' + remoteMachines[id].computerName);
 	}
 }
 
