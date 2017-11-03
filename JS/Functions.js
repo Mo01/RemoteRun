@@ -37,7 +37,7 @@ function isTestExecuteRunning(id) {
 		return;
 	}
     
-    var isRunningOutput = 'false';
+    var isRunningOutput = 'false'; //todo: create and run a script and set the correct result
     return isRunningOutput.toLowerCase() == 'true';
 }
 
@@ -79,16 +79,28 @@ function remoteDesktop(id) {
 
 function onTxtPasswordKeyUp(id) {
 	if (event.keyCode == 13) {
-		remoteDesktop(id);
+        checkMachineStatus(id);
+        var status = getMachineStatus(id);
+        if (status == "" || status == undefined) {
+            remoteDesktop(id);
+        }
+        
+        document.getElementById("txtPassword" + id).value = "";
 	}
 }
 
 function onRunTest(id) {
-	//todo: add logic to run test
-	var test = spanTestName.innerHTML;
-	if (test != "" && test != undefined) {
-		alert('Run ' + spanTestName.innerHTML + ' on ' + remoteMachines[id].computerName);
-	}
+    checkMachineStatus(id);
+    var status = getMachineStatus(id);
+    if (status == "" || status == undefined) {
+        //todo: add logic to run test
+        var test = spanTestName.innerHTML;
+        if (test != "" && test != undefined) {
+            alert('Run ' + spanTestName.innerHTML + ' on ' + remoteMachines[id].computerName);
+        }
+    }
+    
+    document.getElementById("txtPassword" + id).value = "";
 }
 
 function onTestSelectionChanged(element) {
