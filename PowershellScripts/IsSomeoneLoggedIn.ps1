@@ -1,26 +1,30 @@
 Param(
   [string]$computer,
-  [string]$password
+  [string]$password,
+  [string]$outputRedirectFile # Unable to redirect output from cmd because a different encoding is used.
 )
 
-$userName = "Administrator"
+$userName = $computer + "\Administrator"
 $securePassword = ConvertTo-SecureString $password -AsPlainText -Force
 $credential = New-Object System.Management.Automation.PSCredential -ArgumentList $userName, $securePassword
 
 $result = Invoke-Command -Computername $computer -Credential $credential -Scriptblock {quser}
 
+$output = ""
 if ([string]::IsNullOrEmpty($Error[0]))
 {
     if ($result -match "Active")
     {
-        $true
+        $output = $true
     }
     else
     {
-        $false
+        $output = $false
     }
 }
 else
 {
-    "`r`nError"
+    $output = $Error[0]
 }
+
+$output | Out-File $outputRedirectFile -Encoding ASCII

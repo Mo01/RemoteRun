@@ -25,9 +25,9 @@ function isSomeoneLoggedIn(id) {
 	}
     
 	runShell(['powershell -command Set-ExecutionPolicy Unrestricted',
-              'powershell "' + LOGGED_IN_SCRIPT + ' ' + remoteMachines[id].computerName + ' ' + password + '" > ' + TEMP_FILE_PATH]);
+              'powershell "' + LOGGED_IN_SCRIPT + ' ' + remoteMachines[id].computerName + ' ' + password + ' ' + TEMP_FILE_PATH + '"']);
 	var loggedInOutput = readLinesFromFile(TEMP_FILE_PATH);
-    return loggedInOutput.toLowerCase() == 'true';
+    return loggedInOutput.trim().toLowerCase() == 'true';
 }
 
 function isTestExecuteRunning(id) {
@@ -38,7 +38,7 @@ function isTestExecuteRunning(id) {
 	}
     
     var isRunningOutput = 'false'; //todo: create and run a script and set the correct result
-    return isRunningOutput.toLowerCase() == 'true';
+    return isRunningOutput.trim().toLowerCase() == 'true';
 }
 
 function getMachineStatus(id) {
@@ -70,7 +70,7 @@ function remoteDesktop(id) {
 		alert("Please provide a password");
 		return;
 	}
-
+    
 	runShell(['cmdkey /generic:' + remoteMachines[id].computerName +
 			  ' /user:"' + remoteMachines[id].username +
 			  '" /pass:"' + password + '"',

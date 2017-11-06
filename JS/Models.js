@@ -1,8 +1,8 @@
 
-var VERSION = "0.0.32";
+var VERSION = "0.0.33";
 var TEMP_FILE_PATH = new ActiveXObject("Scripting.FileSystemObject").GetSpecialFolder(2) +
     "\\RoctopusConsoleRedirect.tmp";
-var LOGGED_IN_SCRIPT = "PowershellScripts\\IsSomeoneLoggedIn.ps1";
+var LOGGED_IN_SCRIPT = ".\\PowershellScripts\\IsSomeoneLoggedIn.ps1";
 var LIST_SEPARATOR = "---------------------------";
 var OPTION_INDENTOR = "&nbsp;&nbsp;";
 var OPTION_INDENTOR2 = "&nbsp;&nbsp;&nbsp;";
