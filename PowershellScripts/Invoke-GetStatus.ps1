@@ -8,6 +8,5 @@ $userName = $computer + "\Administrator"
 $securePassword = ConvertTo-SecureString $password -AsPlainText -Force
 $credential = New-Object System.Management.Automation.PSCredential -ArgumentList $userName, $securePassword
 
-$result = Invoke-Command -Computername $computer -Credential $credential -FilePath .\PowershellScripts\GetClientName.ps1
-
+$result = Invoke-Command -Computername $computer -Credential $credential -FilePath .\PowershellScripts\GetStatus.ps1
 $result | Out-File $outputRedirectFile -Encoding ASCII

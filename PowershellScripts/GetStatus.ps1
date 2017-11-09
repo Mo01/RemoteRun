@@ -92,4 +92,17 @@ function Get-RDSClientName
   New-Object psobject $returnValue
 }
 
-Get-RDSSessionId | Get-RDSClientName
+# Start.
+#$result = Get-RDSSessionId | Get-RDSClientName
+
+if (-Not([string]::IsNullOrEmpty($Error[0])))
+{
+    $result = "Error:" + $Error[0]
+}
+
+if ([string]::IsNullOrEmpty($result))
+{
+    # run second command
+}
+
+$result

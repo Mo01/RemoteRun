@@ -7,22 +7,26 @@ function checkMachineStatus(id) {
         return;
 	}
     
-    var loggedInPc = getLoggedInPc(id);
-    if (loggedInPc != "" && loggedInPc != undefined) {
-        setMachineStatus(id, "Logged on: " + loggedInPc);
+    var result = getPowershellStatus(id);
+    if (result.split(":")[0] == "Error") {
+        setMachineStatus(id, '<a href="javascript:openTmpFile()">Error Occurred</a>');
     }
-    else if (isTestExecuteRunning(id)) {
-        setMachineStatus(id, "TestExecute is running");
+    
+    if (result.indexOf('TestExecute') >= 0) {
+        setMachineStatus(id, result);
+    }
+    else if (result != "" && result != undefined) {
+        setMachineStatus(id, "Logged on: " + result);
     }
 }
 
 function canPingMachine(ip) {
-	runShell(['%comspec% /c ping ' + ip + ' -n 1 -w 100 > ' + TEMP_FILE_PATH]);
+	runShell('%comspec% /c ping ' + ip + ' -n 1 -w 100 > ' + TEMP_FILE_PATH);
 	var pingOutput = readLinesFromFile(TEMP_FILE_PATH);
 	return pingOutput.indexOf("Reply") > 0;
 }
 
-function getLoggedInPc(id) {
+function getPowershellStatus(id) {
     var password = document.getElementById("txtPassword" + id).value;
     if (password == "" || password == undefined) {
 		alert("Please provide a password");
@@ -30,19 +34,8 @@ function getLoggedInPc(id) {
 	}
     
 	runShell(['powershell -command Set-ExecutionPolicy Unrestricted',
-              'powershell "' + LOGGED_IN_SCRIPT + ' ' + remoteMachines[id].computerName + ' ' + password + ' ' + TEMP_FILE_PATH + '"']);
+              'powershell "' + STATUS_SCRIPT + ' ' + remoteMachines[id].computerName + ' ' + password + ' ' + TEMP_FILE_PATH + '"']);
 	return readLinesFromFile(TEMP_FILE_PATH);
-}
-
-function isTestExecuteRunning(id) {
-    var password = document.getElementById("txtPassword" + id).value;
-    if (password == "" || password == undefined) {
-		alert("Please provide a password");
-		return;
-	}
-    
-    var isRunningOutput = 'false'; //todo: create and run a script and set the correct result
-    return isRunningOutput.trim().toLowerCase() == 'true';
 }
 
 function getMachineStatus(id) {
@@ -53,11 +46,20 @@ function setMachineStatus(id, status) {
 	document.getElementById("machineStatus" + id).innerHTML = status;
 }
 
-function runShell(arrCommands) {
+function runShell(command, windowStyle, waitOnReturn) {
+    if (typeof(windowStyle)==='undefined') windowStyle = 0;
+    if (typeof(waitOnReturn)==='undefined') waitOnReturn = true;
+    
 	var wshShell = new ActiveXObject("WScript.Shell");
-	arrCommands.forEach(function(command) {
-		wshShell.Run(command, 0, true);
-	});
+    if (Array.isArray(command)) {
+        command.forEach(function(commnd) {
+            wshShell.Run(commnd, windowStyle, waitOnReturn);
+        });
+    }
+    else {
+        wshShell.Run(command, windowStyle, waitOnReturn);
+    }
+	
 }
 
 function readLinesFromFile(filePath) {
@@ -79,6 +81,10 @@ function remoteDesktop(id) {
 			  ' /user:"' + remoteMachines[id].username +
 			  '" /pass:"' + password + '"',
 			  'mstsc /v:' + remoteMachines[id].computerName + ' /admin /fullscreen']);
+}
+
+function openTmpFile() {
+    runShell("notepad " + TEMP_FILE_PATH, 1, false);
 }
 
 function onTxtPasswordKeyUp(id) {

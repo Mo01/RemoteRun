@@ -1,8 +1,8 @@
 
-var VERSION = "0.0.35";
+var VERSION = "0.0.36";
 var TEMP_FILE_PATH = new ActiveXObject("Scripting.FileSystemObject").GetSpecialFolder(2) +
     "\\RoctopusConsoleRedirect.tmp";
-var LOGGED_IN_SCRIPT = ".\\PowershellScripts\\Invoke-GetClientName.ps1";
+var STATUS_SCRIPT = ".\\PowershellScripts\\Invoke-GetStatus.ps1";
 var LIST_SEPARATOR = "---------------------------";
 var OPTION_INDENTOR = "&nbsp;&nbsp;";
 var OPTION_INDENTOR2 = "&nbsp;&nbsp;&nbsp;";
