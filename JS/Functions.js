@@ -8,15 +8,19 @@ function checkMachineStatus(id) {
 	}
     
     var result = getPowershellStatus(id);
-    if (result.split(":")[0] == "Error") {
-        setMachineStatus(id, '<a href="javascript:openTmpFile()">Error Occurred</a>');
-    }
-    
-    if (result.indexOf('TestExecute') >= 0) {
-        setMachineStatus(id, result);
-    }
-    else if (result != "" && result != undefined) {
-        setMachineStatus(id, "Logged on: " + result);
+    if (result != "" && result != undefined) {
+        if (result.split(":")[0] == "Error") {
+            setMachineStatus(id, '<a href="javascript:openTmpFile()">Error Occurred</a>');
+        }
+        else {
+            if (result.indexOf('TestExecute') >= 0) {
+                setMachineStatus(id, result);
+            }
+            else {
+                //todo: in future I think I will just return the string I need from powershell rather than setting it here
+                setMachineStatus(id, "Logged on: " + result);
+            }
+        }
     }
 }
 
@@ -97,20 +101,6 @@ function onTxtPasswordKeyUp(id) {
         
         document.getElementById("txtPassword" + id).value = "";
 	}
-}
-
-function onRunTest(id) {
-    checkMachineStatus(id);
-    var status = getMachineStatus(id);
-    if (status == "" || status == undefined) {
-        //todo: add logic to run test
-        var test = spanTestName.innerHTML;
-        if (test != "" && test != undefined) {
-            alert('Run ' + spanTestName.innerHTML + ' on ' + remoteMachines[id].computerName);
-        }
-    }
-    
-    document.getElementById("txtPassword" + id).value = "";
 }
 
 function onTestSelectionChanged(element) {

@@ -1,5 +1,5 @@
 
-var VERSION = "0.0.36";
+var VERSION = "0.0.37";
 var TEMP_FILE_PATH = new ActiveXObject("Scripting.FileSystemObject").GetSpecialFolder(2) +
     "\\RoctopusConsoleRedirect.tmp";
 var STATUS_SCRIPT = ".\\PowershellScripts\\Invoke-GetStatus.ps1";
@@ -65,13 +65,15 @@ var type = {
 	rm1100: "RM1100"
 };
 
-function RemoteMachine(sServerModel, sComputerName, sOS, sArchitecture, sIP) {
+function RemoteMachine(sServerModel, sComputerName, sOS, sArchitecture, sIP, sUsername) {
+    if (typeof(sUsername) === 'undefined') sUsername = "Administrator";
+    
     RemoteMachine.Count++;
 
     this.index = RemoteMachine.Count;
     this.serverModel = sServerModel;
     this.computerName = sComputerName;
-    this.username = "Administrator";
+    this.username = sUsername;
     this.os = sOS;
     this.architecture = sArchitecture;
     this.ip = sIP;
@@ -86,7 +88,7 @@ function RemoteMachine(sServerModel, sComputerName, sOS, sArchitecture, sIP) {
         ip: '<a href="javascript:remoteDesktop(' + id + ')" title="remote in">' + this.ip + '</a>',
         txtBoxPassword: '<input type="password" id="txtPassword' + id + '" class="form-control" onKeyUp="onTxtPasswordKeyUp(' + id + ')" />',
         status: '<span id="machineStatus' + id + '"></span>',
-        btnRun: '<input type="button" id="btnRun' + id + '" class="btn btn-danger" value="Run Test" onClick="onRunTest(' + id + ')" align="middle" />'
+        btnRun: '<input type="button" id="btnRun' + id + '" class="btn btn-danger" value="Run Test" align="middle" />'
     };
 }
 // Static property.

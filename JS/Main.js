@@ -40,7 +40,7 @@ for (var i = 0; i < remoteMachines.length; i++) {
             var id = $(this).attr('id').replace('btnRun', '');
             var status = getMachineStatus(id);
             if (status == '' || status == undefined) {
-                alert('run test');
+                alert('feature not yet implemented');
             }
         });
 }
