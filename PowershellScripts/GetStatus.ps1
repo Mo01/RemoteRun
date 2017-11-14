@@ -100,7 +100,7 @@ function Get-LoggedInStatus
     {
         $returnValue = "Error:" + $Error[0]
     }
-    elseif (-Not([string]::IsNullOrEmpty($result)))
+    elseif (-Not([string]::IsNullOrEmpty($returnValue)))
     {
         $returnValue = "Logged on: " + $returnValue
     }
