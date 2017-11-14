@@ -76,7 +76,7 @@ function remoteDesktop(id) {
 	}
     
 	runShell(['cmdkey /generic:' + remoteMachines[id].computerName +
-			  ' /user:"' + remoteMachines[id].username +
+			  ' /user:"' + remoteMachines[id].computerName + '\\' + remoteMachines[id].username +
 			  '" /pass:"' + password + '"',
 			  'mstsc /v:' + remoteMachines[id].computerName + ' /admin /fullscreen']);
 }
@@ -88,8 +88,8 @@ function openTmpFile() {
 function onTxtPasswordKeyUp(id) {
 	if (event.keyCode == 13) {
         checkMachineStatus(id);
-        var status = getMachineStatus(id).trim();
-        if (status == '' || status == undefined) {
+        var status = getMachineStatus(id);
+        if (status == undefined || status.trim() == '') {
             remoteDesktop(id);
         }
         
