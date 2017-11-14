@@ -88,7 +88,7 @@ function openTmpFile() {
 function onTxtPasswordKeyUp(id) {
 	if (event.keyCode == 13) {
         checkMachineStatus(id);
-        var status = getMachineStatus(id);
+        var status = getMachineStatus(id).trim();
         if (status == '' || status == undefined) {
             remoteDesktop(id);
         }
