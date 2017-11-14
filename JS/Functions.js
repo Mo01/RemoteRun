@@ -1,25 +1,19 @@
 
 function checkMachineStatus(id) {
-    setMachineStatus(id, "");
+    setMachineStatus(id, '');
     
     if (!canPingMachine(remoteMachines[id].ip)) {
-		setMachineStatus(id, "Unable to ping");
+		setMachineStatus(id, 'Unable to ping');
         return;
 	}
     
     var result = getPowershellStatus(id);
-    if (result != "" && result != undefined) {
-        if (result.split(":")[0] == "Error") {
+    if (result != '' && result != undefined) {
+        if (result.split(':')[0] == 'Error') {
             setMachineStatus(id, '<a href="javascript:openTmpFile()">Error Occurred</a>');
         }
         else {
-            if (result.indexOf('TestExecute') >= 0) {
-                setMachineStatus(id, result);
-            }
-            else {
-                //todo: in future I think I will just return the string I need from powershell rather than setting it here
-                setMachineStatus(id, "Logged on: " + result);
-            }
+            setMachineStatus(id, result);
         }
     }
 }
@@ -31,9 +25,9 @@ function canPingMachine(ip) {
 }
 
 function getPowershellStatus(id) {
-    var password = document.getElementById("txtPassword" + id).value;
-    if (password == "" || password == undefined) {
-		alert("Please provide a password");
+    var password = document.getElementById('txtPassword' + id).value;
+    if (password == '' || password == undefined) {
+		alert('Please provide a password');
 		return;
 	}
     
@@ -43,18 +37,18 @@ function getPowershellStatus(id) {
 }
 
 function getMachineStatus(id) {
-	return document.getElementById("machineStatus" + id).innerHTML;
+	return document.getElementById('machineStatus' + id).innerHTML;
 }
 
 function setMachineStatus(id, status) {
-	document.getElementById("machineStatus" + id).innerHTML = status;
+	document.getElementById('machineStatus' + id).innerHTML = status;
 }
 
 function runShell(command, windowStyle, waitOnReturn) {
     if (typeof(windowStyle)==='undefined') windowStyle = 0;
     if (typeof(waitOnReturn)==='undefined') waitOnReturn = true;
     
-	var wshShell = new ActiveXObject("WScript.Shell");
+	var wshShell = new ActiveXObject('WScript.Shell');
     if (Array.isArray(command)) {
         command.forEach(function(commnd) {
             wshShell.Run(commnd, windowStyle, waitOnReturn);
@@ -67,17 +61,17 @@ function runShell(command, windowStyle, waitOnReturn) {
 }
 
 function readLinesFromFile(filePath) {
-	var fso = new ActiveXObject("Scripting.FileSystemObject");
+	var fso = new ActiveXObject('Scripting.FileSystemObject');
 	var fileHandle = fso.OpenTextFile(filePath);
-	var lines = fileHandle.AtEndOfStream ? "" : fileHandle.ReadAll();
+	var lines = fileHandle.AtEndOfStream ? '' : fileHandle.ReadAll();
 	fileHandle.Close();
 	return lines;
 }
 
 function remoteDesktop(id) {
-	var password = document.getElementById("txtPassword" + id).value;
-	if (password == "" || password == undefined) {
-		alert("Please provide a password");
+	var password = document.getElementById('txtPassword' + id).value;
+	if (password == '' || password == undefined) {
+		alert('Please provide a password');
 		return;
 	}
     
@@ -88,18 +82,18 @@ function remoteDesktop(id) {
 }
 
 function openTmpFile() {
-    runShell("notepad " + TEMP_FILE_PATH, 1, false);
+    runShell('notepad ' + TEMP_FILE_PATH, 1, false);
 }
 
 function onTxtPasswordKeyUp(id) {
 	if (event.keyCode == 13) {
         checkMachineStatus(id);
         var status = getMachineStatus(id);
-        if (status == "" || status == undefined) {
+        if (status == '' || status == undefined) {
             remoteDesktop(id);
         }
         
-        document.getElementById("txtPassword" + id).value = "";
+        document.getElementById('txtPassword' + id).value = '';
 	}
 }
 

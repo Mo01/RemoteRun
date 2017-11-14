@@ -91,18 +91,21 @@ function Get-RDSClientName
   }
   New-Object psobject $returnValue
 }
+# End Author of Frank Peter
+
+function Get-LoggedInStatus
+{
+    $returnValue = Get-RDSSessionId | Get-RDSClientName
+    if (-Not([string]::IsNullOrEmpty($Error[0])))
+    {
+        $returnValue = "Error:" + $Error[0]
+    }
+    elseif (-Not([string]::IsNullOrEmpty($result)))
+    {
+        $returnValue = "Logged on: " + $returnValue
+    }
+    New-Object psobject $returnValue
+}
 
 # Start.
-#$result = Get-RDSSessionId | Get-RDSClientName
-
-if (-Not([string]::IsNullOrEmpty($Error[0])))
-{
-    $result = "Error:" + $Error[0]
-}
-
-if ([string]::IsNullOrEmpty($result))
-{
-    # run second command
-}
-
-$result
+Get-LoggedInStatus
