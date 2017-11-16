@@ -87,14 +87,18 @@ function openTmpFile() {
 
 function onTxtPasswordKeyUp(id) {
 	if (event.keyCode == 13) {
-        checkMachineStatus(id);
-        var status = getMachineStatus(id);
-        if (status == undefined || status.trim() == '') {
-            remoteDesktop(id);
-        }
-        
-        document.getElementById('txtPassword' + id).value = '';
+        onRemoteDesktop(id);
 	}
+}
+
+function onRemoteDesktop(id) {
+    checkMachineStatus(id);
+    var status = getMachineStatus(id);
+    if (status == undefined || status.trim() == '') {
+        remoteDesktop(id);
+    }
+
+    document.getElementById('txtPassword' + id).value = '';
 }
 
 function onTestSelectionChanged(element) {
