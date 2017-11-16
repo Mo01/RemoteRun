@@ -1,5 +1,5 @@
 
-var VERSION = '0.0.38';
+var VERSION = '0.0.39';
 var TEMP_FILE_PATH = new ActiveXObject('Scripting.FileSystemObject').GetSpecialFolder(2) +
     '\\RoctopusConsoleRedirect.tmp';
 var STATUS_SCRIPT = '.\\PowershellScripts\\Invoke-GetStatus.ps1';
@@ -103,7 +103,7 @@ var remoteMachines = [
     new RemoteMachine(type.powerUltra, 'QA-Ultra720-120', os.v2008, architecture.x64, '172.18.0.120'),
     new RemoteMachine(type.powerPlus, 'QA-Plus720-121', os.v2008, architecture.x64, '172.18.0.121'),
     new RemoteMachine(type.powerPlus, 'QA-Plus520-122', os.v10, architecture.x64, '172.18.0.122'),
-    new RemoteMachine(type.powerPlus, 'Win2012', os.v2012, architecture.x64, '172.18.0.123'),
+    new RemoteMachine(type.powerPlus, 'QA-Plus510-123', os.v2012, architecture.x64, '172.18.0.123'),
 	new RemoteMachine(type.powerPlus, 'QA-Plus520-124', os.v10IoT, architecture.x64, '172.18.0.124'),
     new RemoteMachine(type.powerUltra, 'QA-Ultra720-126', os.v2012, architecture.x64, '172.18.0.126')
 ];

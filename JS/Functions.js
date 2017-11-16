@@ -76,8 +76,8 @@ function remoteDesktop(id) {
 	}
     
 	runShell(['cmdkey /generic:' + remoteMachines[id].computerName +
-			  ' /user:"' + remoteMachines[id].computerName + '\\' + remoteMachines[id].username +
-			  '" /pass:"' + password + '"',
+			     ' /user:"' + remoteMachines[id].computerName + '\\' + remoteMachines[id].username +
+			     '" /pass:"' + password + '"',
 			  'mstsc /v:' + remoteMachines[id].computerName + ' /admin /fullscreen']);
 }
 

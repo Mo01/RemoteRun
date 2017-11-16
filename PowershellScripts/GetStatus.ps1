@@ -69,25 +69,28 @@ function Get-RDSClientName
     $SessionId
   )
   $returnValue = $null
-  $regKey = 'HKCU:\Volatile Environment\{0}' -f $SessionId
-  try
+  if ($SessionId -ne 'Disc')
   {
-    $ErrorActionPreference = 'Stop'
-    $regKeyValues = Get-ItemProperty $regKey
-    $sessionName = $regKeyValues | ForEach-Object {$_.SESSIONNAME}
-    if ($sessionName -ne 'Console')
-    {
-      $returnValue = $regKeyValues | ForEach-Object {$_.CLIENTNAME}
-    }
-    else
-    {
-      Write-Warning 'Console session'
-#     $returnValue = $env:COMPUTERNAME
-    }
-  }
-  catch
-  {
-    $_.Exception | Write-Error
+	  $regKey = 'HKCU:\Volatile Environment\{0}' -f $SessionId
+	  try
+	  {
+		$ErrorActionPreference = 'Stop'
+		$regKeyValues = Get-ItemProperty $regKey
+		$sessionName = $regKeyValues | ForEach-Object {$_.SESSIONNAME}
+		if ($sessionName -ne 'Console')
+		{
+		  $returnValue = $regKeyValues | ForEach-Object {$_.CLIENTNAME}
+		}
+		else
+		{
+		  Write-Warning 'Console session'
+	     #$returnValue = $env:COMPUTERNAME
+		}
+	  }
+	  catch
+	  {
+		$_.Exception | Write-Error
+	  }
   }
   New-Object psobject $returnValue
 }
@@ -107,5 +110,21 @@ function Get-LoggedInStatus
     New-Object psobject $returnValue
 }
 
+function Get-TestExecuteStatus
+{
+    $returnValue = Get-Process TestExecute -ErrorAction SilentlyContinue
+    if ($returnValue -ne $null)
+    {
+        $returnValue = "TestExecute is running"
+    }
+    New-Object psobject $returnValue
+}
+
 # Start.
-Get-LoggedInStatus
+$status = Get-LoggedInStatus
+if ([string]::IsNullOrEmpty($status))
+{
+    $status = Get-TestExecuteStatus
+}
+
+$status
