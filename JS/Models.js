@@ -73,10 +73,10 @@ function RemoteMachine(sServerModel, sComputerName, sOS, sArchitecture, sIP, sUs
     this.index = RemoteMachine.Count;
     this.serverModel = sServerModel;
     this.computerName = sComputerName;
-    this.username = sUsername;
     this.os = sOS;
     this.architecture = sArchitecture;
     this.ip = sIP;
+    this.username = sUsername;
 
     var id = RemoteMachine.Count - 1;
     this.htmlProperties = {
