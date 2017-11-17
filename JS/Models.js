@@ -70,7 +70,7 @@ function RemoteMachine(sServerModel, sComputerName, sOS, sArchitecture, sIP, sUs
     
     RemoteMachine.Count++;
 
-    this.index = RemoteMachine.Count;
+    this.id = RemoteMachine.Count;
     this.serverModel = sServerModel;
     this.computerName = sComputerName;
     this.os = sOS;
@@ -78,17 +78,17 @@ function RemoteMachine(sServerModel, sComputerName, sOS, sArchitecture, sIP, sUs
     this.ip = sIP;
     this.username = sUsername;
 
-    var id = RemoteMachine.Count - 1;
+    var arrayIndex = RemoteMachine.Count - 1;
     this.htmlProperties = {
-        index: this.index,
+        id: this.id,
         serverModel: this.serverModel,
         computerName: '<b>' + this.computerName + '</b>',
         os: this.os,
         architecture: this.architecture,
-        ip: '<a href="javascript:onRemoteDesktop(' + id + ')" title="remote in">' + this.ip + '</a>',
-        txtBoxPassword: '<input type="password" id="txtPassword' + id + '" class="form-control" onKeyUp="onTxtPasswordKeyUp(' + id + ')" />',
-        status: '<span id="machineStatus' + id + '"></span>',
-        btnRun: '<input type="button" id="btnRun' + id + '" class="btn btn-danger" value="Run Test" align="middle" />'
+        ip: '<a href="javascript:onRemoteDesktop(' + arrayIndex + ')" title="remote in">' + this.ip + '</a>',
+        txtBoxPassword: '<input type="password" id="txtPassword' + arrayIndex + '" class="form-control" onKeyUp="onTxtPasswordKeyUp(' + arrayIndex + ')" />',
+        status: '<span id="machineStatus' + arrayIndex + '"></span>',
+        btnRun: '<input type="button" id="btnRun' + arrayIndex + '" class="btn btn-danger" value="Run Test" align="middle" />'
     };
 }
 // Static property.
