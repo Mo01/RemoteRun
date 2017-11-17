@@ -117,7 +117,7 @@ function Get-TestExecuteStatus
     {
         $returnValue = "TestExecute is running"
     }
-    New-Object psobject $returnValue
+    return $returnValue
 }
 
 # Start.
