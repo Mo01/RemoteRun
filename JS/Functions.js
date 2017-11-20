@@ -25,14 +25,8 @@ function canPingMachine(ip) {
 }
 
 function getPowershellStatus(id) {
-    var password = document.getElementById('txtPassword' + id).value;
-    if (password == '' || password == undefined) {
-		alert('Please provide a password');
-		return;
-	}
-    
 	runShell(['powershell -command Set-ExecutionPolicy Unrestricted',
-              'powershell "' + STATUS_SCRIPT + ' ' + remoteMachines[id].computerName + ' ' + password + ' ' + TEMP_FILE_PATH + '"']);
+              'powershell "' + STATUS_SCRIPT + ' ' + remoteMachines[id].computerName + ' ' + remoteMachines[id].password + ' ' + TEMP_FILE_PATH + '"']);
 	return readLinesFromFile(TEMP_FILE_PATH);
 }
 
@@ -69,26 +63,14 @@ function readLinesFromFile(filePath) {
 }
 
 function remoteDesktop(id) {
-	var password = document.getElementById('txtPassword' + id).value;
-	if (password == '' || password == undefined) {
-		alert('Please provide a password');
-		return;
-	}
-    
 	runShell(['cmdkey /generic:' + remoteMachines[id].computerName +
 			     ' /user:"' + remoteMachines[id].computerName + '\\' + remoteMachines[id].username +
-			     '" /pass:"' + password + '"',
+			     '" /pass:"' + remoteMachines[id].password + '"',
 			  'mstsc /v:' + remoteMachines[id].computerName + ' /admin /fullscreen']);
 }
 
 function openTmpFile() {
     runShell('notepad ' + TEMP_FILE_PATH, 1, false);
-}
-
-function onTxtPasswordKeyUp(id) {
-	if (event.keyCode == 13) {
-        onRemoteDesktop(id);
-	}
 }
 
 function onRemoteDesktop(id) {
@@ -97,8 +79,6 @@ function onRemoteDesktop(id) {
     if (status == undefined || status.trim() == '') {
         remoteDesktop(id);
     }
-
-    document.getElementById('txtPassword' + id).value = '';
 }
 
 function onTestSelectionChanged(element) {

@@ -1,5 +1,5 @@
 
-var VERSION = '0.0.41';
+var VERSION = '0.0.42';
 var TEMP_FILE_PATH = new ActiveXObject('Scripting.FileSystemObject').GetSpecialFolder(2) +
     '\\RoctopusConsoleRedirect.tmp';
 var STATUS_SCRIPT = '.\\PowershellScripts\\Invoke-GetStatus.ps1';
@@ -65,8 +65,9 @@ var type = {
 	rm1100: 'RM1100'
 };
 
-function RemoteMachine(sServerModel, sComputerName, sOS, sArchitecture, sIP, sUsername) {
+function RemoteMachine(sServerModel, sComputerName, sOS, sArchitecture, sIP, sUsername, sPassword) {
     if (typeof(sUsername) === 'undefined') sUsername = 'Administrator';
+    if (typeof(sPassword) === 'undefined') sPassword = 'Completeview!';
     
     RemoteMachine.Count++;
 
@@ -77,6 +78,7 @@ function RemoteMachine(sServerModel, sComputerName, sOS, sArchitecture, sIP, sUs
     this.architecture = sArchitecture;
     this.ip = sIP;
     this.username = sUsername;
+    this.password = sPassword;
 
     var arrayIndex = RemoteMachine.Count - 1;
     this.htmlProperties = {
@@ -86,7 +88,6 @@ function RemoteMachine(sServerModel, sComputerName, sOS, sArchitecture, sIP, sUs
         os: this.os,
         architecture: this.architecture,
         ip: '<a href="javascript:onRemoteDesktop(' + arrayIndex + ')" title="remote in">' + this.ip + '</a>',
-        txtBoxPassword: '<input type="password" id="txtPassword' + arrayIndex + '" class="form-control" onKeyUp="onTxtPasswordKeyUp(' + arrayIndex + ')" />',
         status: '<span id="machineStatus' + arrayIndex + '"></span>',
         btnRun: '<input type="button" id="btnRun' + arrayIndex + '" class="btn btn-danger" value="Run Test" align="middle" />'
     };
@@ -96,10 +97,10 @@ RemoteMachine.Count = 0;
 
 var remoteMachines = [
     new RemoteMachine(type.powerProR, 'WIN-HOHNKC8JBI8', os.v2012, architecture.x64, '172.18.0.100'),
-    new RemoteMachine(type.powerPro, 'QA-POWERPRO-RB', os.v7, architecture.x64, '172.18.0.101'),
-    new RemoteMachine(type.powerPro, 'DESKTOP-HHC3INQ', os.v10, architecture.x64, '172.18.0.102'),
-    new RemoteMachine(type.rm1100, 'QA_RM1100', os.v81, architecture.x64, '172.18.0.103'),
-    new RemoteMachine(type.rm1000, 'QA-RM1000', os.v7, architecture.x32, '172.18.0.104'),
+    new RemoteMachine(type.powerPro, 'QA-POWERPRO-RB', os.v7, architecture.x64, '172.18.0.101', 'Administrator', 'completeview'),
+    new RemoteMachine(type.powerPro, 'DESKTOP-HHC3INQ', os.v10, architecture.x64, '172.18.0.102', 'Administrator', 'completeview'),
+    new RemoteMachine(type.rm1100, 'QA_RM1100', os.v81, architecture.x64, '172.18.0.103', 'Administrator', 'completeview'),
+    new RemoteMachine(type.rm1000, 'QA-RM1000', os.v7, architecture.x32, '172.18.0.104', 'Administrator', 'completeview'),
     new RemoteMachine(type.powerUltra, 'QA-Ultra720-120', os.v2008, architecture.x64, '172.18.0.120'),
     new RemoteMachine(type.powerPlus, 'QA-Plus720-121', os.v2008, architecture.x64, '172.18.0.121'),
     new RemoteMachine(type.powerPlus, 'QA-Plus520-122', os.v10, architecture.x64, '172.18.0.122'),

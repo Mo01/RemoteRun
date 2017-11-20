@@ -1,7 +1,7 @@
 
 title.innerHTML += ' ' + oHTA.version + '.' + VERSION;
 
-window.resizeTo(1440 - 160, 790);
+window.resizeTo(1440 - 360, 790);
 
 // Populate dropdown of tests.
 for (var i = 0; i < tests.length; i++) {
