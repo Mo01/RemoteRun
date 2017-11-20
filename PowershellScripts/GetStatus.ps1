@@ -84,7 +84,7 @@ function Get-RDSClientName
 		else
 		{
 		 #Write-Warning 'Console session'
-	     $returnValue = 'KVM Session' #$env:COMPUTERNAME
+	     #$returnValue = 'KVM Session' #$env:COMPUTERNAME
 		}
 	  }
 	  catch
