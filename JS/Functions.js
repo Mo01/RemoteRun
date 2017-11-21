@@ -12,6 +12,10 @@ function checkMachineStatus(id) {
         if (result.split(':')[0] == 'Error') {
             setMachineStatus(id, '<a href="javascript:openTmpFile()">Error Occurred</a>');
         }
+        else if (result.indexOf('Locked') >= 0) {
+            var overrideSession = '</br><a href="javascript:remoteDesktop(' + id + ')">Override Session</a>';
+            setMachineStatus(id, result + overrideSession);
+        }
         else {
             setMachineStatus(id, result);
         }

@@ -26,18 +26,22 @@ function Get-RDSSessionId
     [System.String] 
     $UserName = $env:USERNAME
   )
-  $returnValue = $null
+  $returnValue = '-1'
   try
   {
     $ErrorActionPreference = 'Stop'
     $output = query.exe session $UserName |
       ForEach-Object {$_.Trim() -replace '\s+', ','} |
         ConvertFrom-Csv
-    $returnValue = $output.ID
+        
+    if ($output -ne 'No session exists for {0}' -f $UserName)
+    {
+        $returnValue = $output.ID
+    }
   }
   catch
   {
-    $_.Exception | Write-Error
+    $Error.Clear()
   }
   New-Object psobject $returnValue
 }
@@ -69,7 +73,7 @@ function Get-RDSClientName
     $SessionId
   )
   $returnValue = $null
-  if ($SessionId -ne 'Disc')
+  if ($SessionId -ne '-1' -and $SessionId -ne 'Disc')
   {
 	  $regKey = 'HKCU:\Volatile Environment\{0}' -f $SessionId
 	  try
@@ -83,18 +87,32 @@ function Get-RDSClientName
 		}
 		else
 		{
-		 #Write-Warning 'Console session'
-	     #$returnValue = 'KVM Session' #$env:COMPUTERNAME
+	       $returnValue = 'KVM Session'
 		}
 	  }
 	  catch
 	  {
-		$_.Exception | Write-Error
+		#$_.Exception | Write-Error
 	  }
   }
   New-Object psobject $returnValue
 }
 # End Author of Frank Peter
+
+function IsComputerUnlocked
+{
+    $isUnlocked = $true
+    try
+    {
+        if ((Get-Process logonui -ErrorAction Stop))
+        {
+            $isUnlocked = $false
+        }
+    }
+    catch { }
+    
+    return $isUnlocked
+}
 
 function Get-LoggedInStatus
 {
@@ -106,6 +124,10 @@ function Get-LoggedInStatus
     elseif (-Not([string]::IsNullOrEmpty($returnValue)))
     {
         $returnValue = "Logged on: " + $returnValue
+        if (-Not(IsComputerUnlocked))
+        {
+            $returnValue = '(Locked)' + $returnValue
+        }
     }
     New-Object psobject $returnValue
 }
