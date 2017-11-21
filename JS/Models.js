@@ -1,5 +1,5 @@
 
-var VERSION = '0.0.43';
+var VERSION = '0.0.44';
 var TEMP_FILE_PATH = new ActiveXObject('Scripting.FileSystemObject').GetSpecialFolder(2) +
     '\\RoctopusConsoleRedirect.tmp';
 var STATUS_SCRIPT = '.\\PowershellScripts\\Invoke-GetStatus.ps1';
