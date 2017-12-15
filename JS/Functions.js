@@ -10,9 +10,11 @@ function checkMachineStatus(id) {
     var result = getPowershellStatus(id);
     if (result != '' && result != undefined) {
         if (result.split(':')[0] == 'Error') {
-            setMachineStatus(id, '<a href="javascript:showLastConsoleRedirect()">Error Occurred</a>');
+            var errorOccurred = '<a href="javascript:showLastConsoleRedirect()">Error Occurred</a>';
+            var connectAnyways = '</br><a href="javascript:remoteDesktop(' + id + ')">Connect anyways</a>';
+            setMachineStatus(id, errorOccurred + connectAnyways);
         }
-        else if (result.indexOf('Locked') >= 0) {
+        else if (result.indexOf('Locked') >= 0 || result.indexOf('KVM') >= 0) {
             var overrideSession = '</br><a href="javascript:remoteDesktop(' + id + ')">Override Session</a>';
             setMachineStatus(id, result + overrideSession);
         }

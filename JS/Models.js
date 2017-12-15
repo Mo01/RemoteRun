@@ -1,11 +1,11 @@
 
-var VERSION = '0.0.44';
+var VERSION = '0.0.45';
 var TEMP_FILE_PATH = new ActiveXObject('Scripting.FileSystemObject').GetSpecialFolder(2) +
     '\\RoctopusConsoleRedirect.tmp';
 var STATUS_SCRIPT = '.\\PowershellScripts\\Invoke-GetStatus.ps1';
 var LIST_SEPARATOR = '---------------------------';
 var OPTION_INDENTOR = '&nbsp;&nbsp;';
-var OPTION_INDENTOR2 = '&nbsp;&nbsp;&nbsp;';
+var OPTION_INDENTOR2 = OPTION_INDENTOR + '&nbsp;';
 
 var platform = {
 	Desktop: 'Desktop',
@@ -99,12 +99,13 @@ var remoteMachines = [
     new RemoteMachine(type.powerProR, 'WIN-HOHNKC8JBI8', os.v2012, architecture.x64, '172.18.0.100'),
     new RemoteMachine(type.powerPro, 'QA-POWERPRO-RB', os.v7, architecture.x64, '172.18.0.101', 'Administrator', 'completeview'),
     new RemoteMachine(type.powerPro, 'DESKTOP-HHC3INQ', os.v10, architecture.x64, '172.18.0.102', 'Administrator', 'completeview'),
-    new RemoteMachine(type.rm1100, 'QA_RM1100', os.v81, architecture.x64, '172.18.0.103', 'Administrator', 'completeview'),
+    new RemoteMachine(type.rm1100, 'QA_RM1100', os.v81, architecture.x64, '172.18.0.103'),
     new RemoteMachine(type.rm1000, 'QA-RM1000', os.v7, architecture.x32, '172.18.0.104', 'Administrator', 'completeview'),
     new RemoteMachine(type.powerUltra, 'QA-Ultra720-120', os.v2008, architecture.x64, '172.18.0.120'),
     new RemoteMachine(type.powerPlus, 'QA-Plus720-121', os.v2008, architecture.x64, '172.18.0.121'),
     new RemoteMachine(type.powerPlus, 'QA-Plus520-122', os.v10, architecture.x64, '172.18.0.122'),
     new RemoteMachine(type.powerPlus, 'QA-Plus510-123', os.v2012, architecture.x64, '172.18.0.123'),
-	new RemoteMachine(type.powerPlus, 'QA-Plus520-124', os.v10IoT, architecture.x64, '172.18.0.124'),
+    new RemoteMachine(type.powerPlus, 'QA-Plus520-124', os.v10IoT, architecture.x64, '172.18.0.124'),
+    new RemoteMachine(type.powerUltra, 'QA-Ultra720-125', os.v2012, architecture.x64, '172.18.0.125'),
     new RemoteMachine(type.powerUltra, 'QA-Ultra720-126', os.v2012, architecture.x64, '172.18.0.126')
 ];

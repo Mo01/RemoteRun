@@ -1,5 +1,5 @@
 # Author of functions below: Frank Peter
-#source: http://www.out-web.net/?p=1479
+# Source: http://www.out-web.net/?p=1479
 <#
   .SYNOPSIS
     Returns the RDS session ID of a given user.
@@ -97,7 +97,7 @@ function Get-RDSClientName
   }
   New-Object psobject $returnValue
 }
-# End Author of Frank Peter
+# End of Author Frank Peter
 
 function IsComputerUnlocked
 {
@@ -126,7 +126,7 @@ function Get-LoggedInStatus
         $returnValue = "Logged on: " + $returnValue
         if (-Not(IsComputerUnlocked))
         {
-            $returnValue = '(Locked)' + $returnValue
+            $returnValue = "(Locked) " + $returnValue
         }
     }
     New-Object psobject $returnValue
