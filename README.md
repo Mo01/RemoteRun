@@ -1,21 +1,7 @@
 # Roctopus
 
-An application that will remotely run certain tasks from a predefined list of remote machines. This is an HTA that will run TestComplete/TestExcecute's command line remotely. It will also connect to the machine through Remote Desktop Connection when clicking the IP address.
+With Roctopus, we can connect to a machine and now the status of the machine. If you try to log in and someone else is logged in you won't be able to log in and kick them out. It will also not log you in if TestExecute is running. 
 
-## Tasks
-
-- [x] Make HTA
-- [x] Get a list of the QA machines
-- [x] Create a table
-- [x] Create buttons to run remote commands
-- [x] Create dropdown for TestComplete Project Test Items
-- [x] For Run button table header, put in the name of the test that is selected
-- [x] Add available licenses section; TestComplete and TestExecute
-- [x] Create a hyperlink for each QA Machine to run Remote Desktop through the command line
+## Todo
 - [ ] Get a list of all the TestComplete Projects and Test Items
 - [ ] Powershell command to run test
-- [x] Powershell command to see if someone is logged in
-- [x] Powershell command to check if testexecute is running
-- [x] Ping command to check if machine is up
-- [x] CSS
-- [x] Externalize javascript and CSS

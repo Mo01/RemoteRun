@@ -97,10 +97,10 @@ RemoteMachine.Count = 0;
 
 var remoteMachines = [
     new RemoteMachine(type.powerProR, 'WIN-HOHNKC8JBI8', os.v2012, architecture.x64, '172.18.0.100'),
-    new RemoteMachine(type.powerPro, 'QA-POWERPRO-RB', os.v7, architecture.x64, '172.18.0.101', 'Administrator', 'completeview'),
+    new RemoteMachine(type.powerPro, 'QA-PRORB-101', os.v7, architecture.x64, '172.18.0.101', 'Administrator', 'completeview'),
     new RemoteMachine(type.powerPro, 'DESKTOP-HHC3INQ', os.v10, architecture.x64, '172.18.0.102', 'Administrator', 'completeview'),
     new RemoteMachine(type.rm1100, 'QA_RM1100', os.v81, architecture.x64, '172.18.0.103'),
-    new RemoteMachine(type.rm1000, 'QA-RM1000', os.v7, architecture.x32, '172.18.0.104', 'Administrator', 'completeview'),
+    new RemoteMachine(type.rm1000, 'QA-RM1000-104', os.v7, architecture.x32, '172.18.0.104', 'Administrator', 'completeview'),
     new RemoteMachine(type.powerUltra, 'QA-Ultra720-120', os.v2008, architecture.x64, '172.18.0.120'),
     new RemoteMachine(type.powerPlus, 'QA-Plus720-121', os.v2008, architecture.x64, '172.18.0.121'),
     new RemoteMachine(type.powerPlus, 'QA-Plus520-122', os.v10, architecture.x64, '172.18.0.122'),
