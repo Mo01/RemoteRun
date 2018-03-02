@@ -121,6 +121,10 @@ function Get-LoggedInStatus
     {
         $returnValue = "Error:" + $Error[0]
     }
+    elseif ($returnValue.ToUpper() -eq (Hostname).ToUpper())
+    {
+        $returnValue = ""
+    }
     elseif (-Not([string]::IsNullOrEmpty($returnValue)))
     {
         $returnValue = "Logged on: " + $returnValue
