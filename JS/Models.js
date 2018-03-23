@@ -12,7 +12,7 @@ var platform = {
 	Android: 'Android',
 	iOs: 'iOS'
 };
-		
+
 var testType = {
 	Acceptance: 'Acceptance',
 	Performance: 'Performance',
@@ -53,18 +53,19 @@ var os = {
     v8: '8',
     v81: '8.1',
     v10: '10',
-	v10IoT : '10 IoT'
+	v10Iot : '10 IoT'
 };
 
 var type = {
-    powerMicro : 'PowerMicro',
-	powerPlus  : 'PowerPlus',
-	powerPro   : 'PowerPro',
-	powerProR  : 'PowerProR',
-	powerUltra : 'PowerUltra',
-    RED3       : 'RED3',
-	rm1000     : 'RM1000',
-	rm1100     : 'RM1100'
+    powerChoiceLp : 'PowerChoice LP',
+    powerMicro    : 'PowerMicro',
+	powerPlus     : 'PowerPlus',
+	powerPro      : 'PowerPro',
+	powerProR     : 'PowerProR',
+	powerUltra    : 'PowerUltra',
+    RED3          : 'RED3',
+	rm1000        : 'RM1000',
+	rm1100        : 'RM1100'
 };
 
 function RemoteMachine(sServerModel, sComputerName, sOS, sArchitecture, sIP, sUsername, sPassword) {
@@ -98,6 +99,10 @@ function RemoteMachine(sServerModel, sComputerName, sOS, sArchitecture, sIP, sUs
 RemoteMachine.Count = 0;
 
 var remoteMachines = [
+    new RemoteMachine(type.powerUltra, 'QA-Ultra730-50', os.v2012, architecture.x64, '172.18.0.50'),
+    new RemoteMachine(type.powerPlus, 'QA-Plus530-51', os.v2012, architecture.x64, '172.18.0.51'),
+    new RemoteMachine(type.powerPro, 'QA-ProRev3230-52', os.v10Iot, architecture.x64, '172.18.0.52'),
+    new RemoteMachine(type.powerChoiceLp, 'QA-CHOICELP230-53', os.v7, architecture.x64, '172.18.0.53'),
     new RemoteMachine(type.RED3, 'QA-RED3-54', os.v7, architecture.x64, '172.18.0.54'),
     new RemoteMachine(type.powerMicro, 'QA-Micro3040-55', os.v7, architecture.x64, '172.18.0.55'),
     new RemoteMachine(type.powerProR, 'WIN-HOHNKC8JBI8', os.v2012, architecture.x64, '172.18.0.100'),
@@ -109,7 +114,7 @@ var remoteMachines = [
     new RemoteMachine(type.powerPlus, 'QA-Plus720-121', os.v2008, architecture.x64, '172.18.0.121'),
     new RemoteMachine(type.powerPlus, 'QA-Plus520-122', os.v10, architecture.x64, '172.18.0.122'),
     new RemoteMachine(type.powerPlus, 'QA-Plus510-123', os.v2012, architecture.x64, '172.18.0.123'),
-    new RemoteMachine(type.powerPlus, 'QA-Plus520-124', os.v10IoT, architecture.x64, '172.18.0.124'),
+    new RemoteMachine(type.powerPlus, 'QA-Plus520-124', os.v10Iot, architecture.x64, '172.18.0.124'),
     new RemoteMachine(type.powerUltra, 'QA-Ultra720-125', os.v2012, architecture.x64, '172.18.0.125'),
     new RemoteMachine(type.powerUltra, 'QA-Ultra720-126', os.v2012, architecture.x64, '172.18.0.126')
 ];
