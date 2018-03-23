@@ -57,12 +57,14 @@ var os = {
 };
 
 var type = {
-	powerPlus: 'PowerPlus',
-	powerPro: 'PowerPro',
-	powerProR: 'PowerProR',
-	powerUltra: 'PowerUltra',
-	rm1000: 'RM1000',
-	rm1100: 'RM1100'
+    powerMicro : 'PowerMicro',
+	powerPlus  : 'PowerPlus',
+	powerPro   : 'PowerPro',
+	powerProR  : 'PowerProR',
+	powerUltra : 'PowerUltra',
+    RED3       : 'RED3',
+	rm1000     : 'RM1000',
+	rm1100     : 'RM1100'
 };
 
 function RemoteMachine(sServerModel, sComputerName, sOS, sArchitecture, sIP, sUsername, sPassword) {
@@ -96,6 +98,8 @@ function RemoteMachine(sServerModel, sComputerName, sOS, sArchitecture, sIP, sUs
 RemoteMachine.Count = 0;
 
 var remoteMachines = [
+    new RemoteMachine(type.RED3, 'QA-RED3-54', os.v7, architecture.x64, '172.18.0.54'),
+    new RemoteMachine(type.powerMicro, 'QA-Micro3040-55', os.v7, architecture.x64, '172.18.0.55'),
     new RemoteMachine(type.powerProR, 'WIN-HOHNKC8JBI8', os.v2012, architecture.x64, '172.18.0.100'),
     new RemoteMachine(type.powerPro, 'QA-PRORB-101', os.v7, architecture.x64, '172.18.0.101', 'Administrator', 'completeview'),
     new RemoteMachine(type.powerPro, 'DESKTOP-HHC3INQ', os.v10, architecture.x64, '172.18.0.102', 'Administrator', 'completeview'),
