@@ -1,7 +1,5 @@
 
 function checkMachineStatus(id) {
-    setMachineStatus(id, '');
-    
     if (!canPingMachine(remoteMachines[id].ip)) {
 		setMachineStatus(id, 'Unable to ping');
         return;
@@ -9,18 +7,18 @@ function checkMachineStatus(id) {
     
     var result = getPowershellStatus(id);
     if (result != '' && result != undefined) {
+        status = result;
         if (result.split(':')[0] == 'Error') {
             var errorOccurred = '<a href="javascript:showLastConsoleRedirect()">Error Occurred</a>';
             var connectAnyways = '</br><a href="javascript:remoteDesktop(' + id + ')">Connect anyways</a>';
-            setMachineStatus(id, errorOccurred + connectAnyways);
+            status = errorOccurred + connectAnyways;
         }
         else if (result.indexOf('Locked') >= 0 || result.indexOf('KVM') >= 0) {
             var overrideSession = '</br><a href="javascript:remoteDesktop(' + id + ')">Override Session</a>';
-            setMachineStatus(id, result + overrideSession);
+            status = result + overrideSession;
         }
-        else {
-            setMachineStatus(id, result);
-        }
+        
+        setMachineStatus(id, status);
     }
 }
 
@@ -80,8 +78,17 @@ function showLastConsoleRedirect() {
 }
 
 function onRemoteDesktop(id) {
+    var CHECKING_STATUS = 'Checking status...';
+    setMachineStatus(id, CHECKING_STATUS);
+
     checkMachineStatus(id);
+
     var status = getMachineStatus(id);
+    if (status == CHECKING_STATUS) {
+        status = '';
+        setMachineStatus(id, status);
+    }
+    
     if (status == undefined || status.trim() == '') {
         remoteDesktop(id);
     }
