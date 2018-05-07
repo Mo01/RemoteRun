@@ -28,9 +28,11 @@ function canPingMachine(ip) {
 	return pingOutput.indexOf("Reply") > 0;
 }
 
-function getPowershellStatus(id) {
-	runShell(['powershell -command Set-ExecutionPolicy Unrestricted',
-              'powershell "' + STATUS_SCRIPT + ' ' + remoteMachines[id].computerName + ' ' + remoteMachines[id].password + ' ' + TEMP_FILE_PATH + '"']);
+function getPowershellStatus(id) { 
+	runShell('powershell -ExecutionPolicy bypass -File "' + STATUS_SCRIPT + '" ' + 
+             remoteMachines[id].computerName + 
+             ' ' + remoteMachines[id].password +
+             ' "' + TEMP_FILE_PATH + '"');
 	return readLinesFromFile(TEMP_FILE_PATH);
 }
 

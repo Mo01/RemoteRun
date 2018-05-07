@@ -1,8 +1,11 @@
 
-var VERSION = '0.0.47';
+var VERSION = '0.0.48';
 var TEMP_FILE_PATH = new ActiveXObject('Scripting.FileSystemObject').GetSpecialFolder(2) +
     '\\RoctopusConsoleRedirect.tmp';
-var STATUS_SCRIPT = '.\\PowershellScripts\\Invoke-GetStatus.ps1';
+var scripts= document.getElementsByTagName('script');
+var path= scripts[scripts.length-1].src.split('?')[0];      // remove any ?query
+var ROCTOPUS_LOCATION = (path.split('/').slice(0, -2).join('\\')+'\\').replace('file:', '');
+var STATUS_SCRIPT = ROCTOPUS_LOCATION + 'PowershellScripts\\Invoke-GetStatus.ps1';
 var LIST_SEPARATOR = '---------------------------';
 var OPTION_INDENTOR = '&nbsp;&nbsp;';
 var OPTION_INDENTOR2 = OPTION_INDENTOR + '&nbsp;';
